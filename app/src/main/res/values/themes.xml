@@ -3,7 +3,7 @@
     <style name="Theme.StockViewer" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorPrimaryVariant">@color/light_gray</item>
         <item name="colorOnPrimary">@color/gray_900</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/gray_900</item>
@@ -11,7 +11,21 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+    </style>
+
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout.PrimarySurface">
+        <item name="tabMode">scrollable</item>
+        <item name="tabIndicator">@null</item>
+        <item name="tabRippleColor">@android:color/transparent</item>
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+        <item name="tabTextColor">@color/gray_400</item>
+        <item name="tabSelectedTextColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

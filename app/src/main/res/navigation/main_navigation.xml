@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/mainPageFragment2">
+    <fragment
+        android:id="@+id/mainPageFragment2"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page" >
+        <action
+            android:id="@+id/action_mainPageFragment2_to_stockDetailsPageFragment2"
+            app:destination="@id/stockDetailsPageFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockDetailsPageFragment2"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.StockDetailsPageFragment"
+        android:label="fragment_stock_details_page"
+        tools:layout="@layout/fragment_stock_details_page" />
+</navigation>

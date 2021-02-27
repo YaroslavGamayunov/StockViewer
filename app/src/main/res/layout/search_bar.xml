@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="?attr/actionBarSize"
+    app:cardElevation="0dp"
+    app:layout_scrollFlags="scroll|enterAlways"
+    app:strokeColor="?attr/colorSecondary"
+    app:strokeWidth="0.8dp">
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</com.google.android.material.card.MaterialCardView>
