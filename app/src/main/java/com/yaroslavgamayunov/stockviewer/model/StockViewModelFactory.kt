@@ -2,8 +2,7 @@ package com.yaroslavgamayunov.stockviewer.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.yaroslavgamayunov.stockviewer.data.StockApiRepository
-import java.lang.IllegalArgumentException
+import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 
 class StockViewModelFactory(private val stockApiRepository: StockApiRepository) :
     ViewModelProvider.Factory {

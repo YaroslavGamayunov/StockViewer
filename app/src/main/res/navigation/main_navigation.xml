@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/mainPageFragment2">
+    app:startDestination="@id/mainPageFragment">
     <fragment
-        android:id="@+id/mainPageFragment2"
+        android:id="@+id/mainPageFragment"
         android:name="com.yaroslavgamayunov.stockviewer.ui.MainPageFragment"
         android:label="fragment_main_page"
-        tools:layout="@layout/fragment_main_page" >
+        tools:layout="@layout/fragment_main_page">
         <action
-            android:id="@+id/action_mainPageFragment2_to_stockDetailsPageFragment2"
-            app:destination="@id/stockDetailsPageFragment2" />
+            android:id="@+id/action_mainPageFragment_to_stockDetailsFragment"
+            app:destination="@id/stockDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/stockDetailsPageFragment2"
-        android:name="com.yaroslavgamayunov.stockviewer.ui.StockDetailsPageFragment"
-        android:label="fragment_stock_details_page"
-        tools:layout="@layout/fragment_stock_details_page" />
+        android:id="@+id/stockDetailFragment"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.StockDetailFragment"
+        android:label="fragment_stock_details"
+        tools:layout="@layout/fragment_stock_detail" />
 </navigation>

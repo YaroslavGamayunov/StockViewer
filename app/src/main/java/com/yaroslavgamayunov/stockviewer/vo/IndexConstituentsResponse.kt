@@ -1,8 +1,8 @@
-package com.yaroslavgamayunov.stockviewer.data
+package com.yaroslavgamayunov.stockviewer.vo
 
 import com.google.gson.annotations.SerializedName
 
-data class IndexConstituents(
+data class IndexConstituentsResponse(
     @SerializedName("constituents")
     val tickers: List<String>,
     @SerializedName("symbol")

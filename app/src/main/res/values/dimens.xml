@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="stockItemCardCornerRadius">12dp</dimen>
-    <dimen name="stockItemLogoImageSize">72dp</dimen>
+    <dimen name="stockItemLogoImageSize">56dp</dimen>
 </resources>

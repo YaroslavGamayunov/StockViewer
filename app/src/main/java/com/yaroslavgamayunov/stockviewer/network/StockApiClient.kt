@@ -1,7 +1,8 @@
 package com.yaroslavgamayunov.stockviewer.network
 
 import android.util.Log
-import com.yaroslavgamayunov.stockviewer.data.StockItem
+import com.yaroslavgamayunov.stockviewer.vo.StockItem
+import kotlin.math.max
 import kotlin.math.min
 
 class StockApiClient(
@@ -19,17 +20,24 @@ class StockApiClient(
         return constituents.tickers
     }
 
-    suspend fun loadItems(fromIndex: Int, toIndex: Int): List<StockItem> {
+    suspend fun loadItems(page: Int, pageSize: Int): List<StockItem> {
         if (!::tickers.isInitialized) {
             tickers = loadTickers().sorted()
-            Log.d("llllllll", "tickers loaded: ${tickers.size} pieces")
+            Log.d("API", "tickers loaded: ${tickers.size} pieces")
         }
 
-        val queryTickers = tickers.subList(fromIndex, min(toIndex, tickers.size))
+        val fromIndex = page * pageSize
+        val toIndex = fromIndex + pageSize
+
+        if (fromIndex > tickers.size || toIndex <= 0) {
+            return listOf()
+        }
+
+        val queryTickers = tickers.subList(max(0, fromIndex), min(toIndex, tickers.size))
         val queryString = queryTickers.joinToString(",")
 
-        Log.d("llllllll", "queried ${queryTickers} tickers")
+        Log.d("API", "queried ${queryTickers} tickers")
 
-        return iexCloudApiService.getCompanies(queryString).map { StockItem(it) }
+        return iexCloudApiService.getStockItems(queryString)
     }
 }

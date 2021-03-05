@@ -3,8 +3,8 @@ package com.yaroslavgamayunov.stockviewer.network
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.yaroslavgamayunov.stockviewer.BuildConfig
-import com.yaroslavgamayunov.stockviewer.data.Company
-import com.yaroslavgamayunov.stockviewer.data.CompanyListResponseDeserializer
+import com.yaroslavgamayunov.stockviewer.vo.StockItem
+import com.yaroslavgamayunov.stockviewer.vo.StockItemListResponseDeserializer
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,10 +14,10 @@ import retrofit2.http.Query
 
 
 interface IexCloudApiService {
-    @GET("stock/market/batch?types=company,logo")
-    suspend fun getCompanies(
-        @Query("symbols", encoded = true) symbols: String,
-    ): List<Company>
+    @GET("stock/market/batch?types=quote,logo")
+    suspend fun getStockItems(
+        @Query("symbols", encoded = true) tickers: String,
+    ): List<StockItem>
 
     companion object Factory {
         private const val BASE_URL = "https://cloud.iexapis.com/v1/"
@@ -39,8 +39,8 @@ interface IexCloudApiService {
             }.addInterceptor(logging).build()
 
             val gson = GsonBuilder().registerTypeAdapter(
-                TypeToken.getParameterized(List::class.java, Company::class.java).type,
-                CompanyListResponseDeserializer()
+                TypeToken.getParameterized(List::class.java, StockItem::class.java).type,
+                StockItemListResponseDeserializer()
             ).create()
 
             return Retrofit.Builder()

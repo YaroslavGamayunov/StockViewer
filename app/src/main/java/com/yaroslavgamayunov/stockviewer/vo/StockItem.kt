@@ -1,26 +1,32 @@
-package com.yaroslavgamayunov.stockviewer.data
+package com.yaroslavgamayunov.stockviewer.vo
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.*
 import com.google.gson.annotations.SerializedName
 import java.lang.reflect.Type
 
-data class Company(
+@Entity(tableName = "stock_items")
+data class StockItem(
+    @PrimaryKey
     @SerializedName("symbol")
     val ticker: String,
     @SerializedName("companyName")
     val name: String,
-    @SerializedName("marketCap")
-    val marketCapitalization: Double,
+    @SerializedName("previousClose")
+    val previousDayClosePrice: Double,
+    val currentPrice: Double?,
+    val isFavourite: Boolean,
     val logoUrl: String
 )
 
 // This deserializer is used only when processing Iex api responses
-class CompanyListResponseDeserializer : JsonDeserializer<List<Company>> {
+class StockItemListResponseDeserializer : JsonDeserializer<List<StockItem>> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
-    ): List<Company> {
+    ): List<StockItem> {
         if (json == null) {
             return listOf()
         }
@@ -31,9 +37,9 @@ class CompanyListResponseDeserializer : JsonDeserializer<List<Company>> {
         return entries.map { (_, companyJson) ->
             val companyObject = companyJson.asJsonObject.deepCopy()
             val logoUrl = companyObject["logo"].asJsonObject["url"].asString
-            companyObject["company"].asJsonObject.add("logoUrl", JsonPrimitive(logoUrl))
+            companyObject["quote"].asJsonObject.add("logoUrl", JsonPrimitive(logoUrl))
 
-            gson.fromJson(companyObject["company"], Company::class.java)
+            gson.fromJson(companyObject["quote"], StockItem::class.java)
         }
     }
 

@@ -1,7 +1,7 @@
 package com.yaroslavgamayunov.stockviewer.network
 
 import com.yaroslavgamayunov.stockviewer.BuildConfig
-import com.yaroslavgamayunov.stockviewer.data.IndexConstituents
+import com.yaroslavgamayunov.stockviewer.vo.IndexConstituentsResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,7 +12,7 @@ interface FinHubApiService {
     @GET("index/constituents?")
     suspend fun getConstituents(
         @Query("symbol") stockIndex: String,
-    ): IndexConstituents
+    ): IndexConstituentsResponse
 
     companion object Factory {
         private const val BASE_URL = "https://finnhub.io/api/v1/"
