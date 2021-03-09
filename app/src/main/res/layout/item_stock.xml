@@ -90,13 +90,12 @@
 
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/favouriteImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_round_star_24"
-            android:tint="@color/gray_400"
+            android:src="@drawable/ic_round_star_active_24"
             app:layout_constraintBottom_toBottomOf="@+id/stockItemTickerTextView"
             app:layout_constraintStart_toEndOf="@+id/stockItemTickerTextView"
             app:layout_constraintTop_toTopOf="@+id/stockItemTickerTextView"

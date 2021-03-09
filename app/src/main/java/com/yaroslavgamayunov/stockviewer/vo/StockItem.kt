@@ -16,7 +16,7 @@ data class StockItem(
     @SerializedName("previousClose")
     val previousDayClosePrice: Double,
     val currentPrice: Double?,
-    val isFavourite: Boolean,
+    val isFavourite: Boolean = false,
     val logoUrl: String
 )
 
@@ -42,5 +42,4 @@ class StockItemListResponseDeserializer : JsonDeserializer<List<StockItem>> {
             gson.fromJson(companyObject["quote"], StockItem::class.java)
         }
     }
-
 }

@@ -17,5 +17,9 @@
         android:id="@+id/stockDetailFragment"
         android:name="com.yaroslavgamayunov.stockviewer.ui.StockDetailFragment"
         android:label="fragment_stock_details"
-        tools:layout="@layout/fragment_stock_detail" />
+        tools:layout="@layout/fragment_stock_detail">
+        <argument
+            android:name="ticker"
+            app:argType="string" />
+    </fragment>
 </navigation>

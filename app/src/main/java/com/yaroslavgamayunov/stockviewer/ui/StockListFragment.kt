@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -54,18 +55,44 @@ class StockListFragment : Fragment() {
                 factory
             ).get(StockViewModel::class.java)
 
-        setupList()
+        setupList(arguments)
     }
 
-    private fun setupList() {
-        listAdapter = StockListAdapter { stockItem ->
-            findNavController().navigate(R.id.stockDetailFragment)
-        }
+    private fun setupList(arguments: Bundle?) {
+        val filter = arguments?.get(LIST_FILTER_TAG) ?: StockListFilter.ALL
+
+        listAdapter = StockListAdapter(
+            onItemClick = { stockItem ->
+                //TODO: Find out how to handle other fragments (if current destination is not just a MainPageFragment)
+                val action = MainPageFragmentDirections
+                    .actionMainPageFragmentToStockDetailsFragment(stockItem.ticker)
+                findNavController().navigate(action)
+            })
+
         recyclerView.adapter = listAdapter
 
+
         lifecycleScope.launch {
-            stockViewModel.getStocksForIndex("^NDX").collectLatest {
-                listAdapter.submitData(it)
+            when (filter) {
+                StockListFilter.ALL ->
+                    stockViewModel.getStocksForIndexPaged("^NDX").collectLatest {
+                        listAdapter.submitData(it)
+                    }
+
+                StockListFilter.FAVOURITES ->
+                    stockViewModel.getFavouriteStocksPaged().collectLatest {
+                        listAdapter.submitData(it)
+                    }
+            }
+        }
+    }
+
+    companion object {
+        private const val LIST_FILTER_TAG = "list_filter"
+
+        fun newInstance(filter: StockListFilter): StockListFragment {
+            return StockListFragment().apply {
+                arguments = bundleOf(LIST_FILTER_TAG to filter)
             }
         }
     }

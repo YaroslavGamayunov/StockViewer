@@ -19,8 +19,11 @@ interface StockItemDao {
     @Query("SELECT * FROM stock_items WHERE isFavourite=1 ORDER BY ticker ASC")
     fun getFavourites(): PagingSource<Int, StockItem>
 
-    @Query("UPDATE stock_items SET isFavourite=:isFavourite WHERE ticker=:ticker")
-    suspend fun setFavourite(ticker: String, isFavourite: Boolean)
+    @Query("UPDATE stock_items SET isFavourite=1 WHERE ticker IN (:tickers)")
+    suspend fun favourite(tickers: List<String>)
+
+    @Query("UPDATE stock_items SET isFavourite=0 WHERE ticker IN (:tickers)")
+    suspend fun unfavourite(tickers: List<String>)
 
     @Query("DELETE FROM stock_items")
     suspend fun clearStockItems(): Int

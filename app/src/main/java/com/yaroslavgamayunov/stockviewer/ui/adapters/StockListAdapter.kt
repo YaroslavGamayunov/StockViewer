@@ -4,6 +4,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagingDataAdapter
@@ -17,7 +18,7 @@ import com.yaroslavgamayunov.stockviewer.vo.StockItem
 
 
 class StockListAdapter(
-    val onItemClickListener: (StockItem) -> Unit
+    val onItemClick: (StockItem) -> Unit
 ) :
     PagingDataAdapter<StockItem, StockListAdapter.ViewHolder>(ItemComparator) {
 
@@ -34,6 +35,9 @@ class StockListAdapter(
 
         private val stockItemPriceTextView: TextView =
             itemView.findViewById(R.id.stockItemPriceTextView)
+
+        private val favouriteImageButton: ImageButton =
+            itemView.findViewById(R.id.favouriteImageButton)
 
         fun onClick(clickListener: (Int) -> Unit) {
             itemView.setOnClickListener {
@@ -60,6 +64,10 @@ class StockListAdapter(
                 // TODO: Handle different currencies
                 stockItemPriceTextView.text = "$${item.previousDayClosePrice}"
 
+                val favButtonDrawableRes =
+                    if (item.isFavourite)
+                        R.drawable.ic_round_star_inactive_24 else R.drawable.ic_round_star_active_24
+                favouriteImageButton.setImageResource(favButtonDrawableRes)
                 bindLogo(item.logoUrl)
             } else {
                 tickerTextView.text = ""
@@ -96,7 +104,7 @@ class StockListAdapter(
         val viewHolder = ViewHolder(view)
 
         viewHolder.onClick { adapterPosition ->
-            getItem(adapterPosition)?.let { onItemClickListener(it) }
+            getItem(adapterPosition)?.let { onItemClick(it) }
         }
 
         return viewHolder

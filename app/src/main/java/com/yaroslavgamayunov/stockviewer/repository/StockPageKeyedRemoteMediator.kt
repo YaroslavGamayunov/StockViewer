@@ -47,13 +47,19 @@ class StockPageKeyedRemoteMediator(
                 if (loadType == LoadType.REFRESH) {
                     db.remoteKeysDao().clearRemoteKeys()
                     db.stockItemDao().clearStockItems()
-                }
 
-                val keys = loadRemoteKeys(state.config.pageSize)
-                db.remoteKeysDao().insertAll(keys)
+                    val keys = loadRemoteKeys(state.config.pageSize)
+                    db.remoteKeysDao().insertAll(keys)
+                }
 
                 val stockItems = loadPage(page)
                 db.stockItemDao().insertAll(stockItems)
+
+                val favouriteTickers =
+                    db.favouritesDao()
+                        .filterFavourites(stockItems.map { it.ticker })
+                        .map { it.ticker }
+                db.stockItemDao().favourite(favouriteTickers)
 
                 return@withTransaction stockItems.isEmpty()
             }
