@@ -10,6 +10,9 @@ class StockViewModelFactory(private val stockApiRepository: StockApiRepository) 
         if (modelClass.isAssignableFrom(StockViewModel::class.java)) {
             return StockViewModel(stockApiRepository) as T
         }
+        if (modelClass.isAssignableFrom(StockSearchViewModel::class.java)) {
+            return StockSearchViewModel(stockApiRepository) as T
+        }
         throw IllegalArgumentException("Unsupported ViewModel class")
     }
 

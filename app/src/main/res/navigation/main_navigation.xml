@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_mainPageFragment_to_stockDetailsFragment"
             app:destination="@id/stockDetailFragment" />
+        <action
+            android:id="@+id/action_mainPageFragment_to_stockSearchFragment"
+            app:destination="@id/stockSearchFragment" />
     </fragment>
     <fragment
         android:id="@+id/stockDetailFragment"
@@ -22,4 +25,9 @@
             android:name="ticker"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/stockSearchFragment"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.StockSearchFragment"
+        android:label="fragment_stock_search"
+        tools:layout="@layout/fragment_stock_search" />
 </navigation>

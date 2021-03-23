@@ -2,8 +2,10 @@
     <string name="app_name">StockViewer</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="updated_yesterday">Updated yesterday</string>
+    <string name="updated_long_ago">Updated long ago</string>
     <string name="add_to_favourites">Add to favourites</string>
+    <string name="find_company_or_ticker">Find company or ticker</string>
+    <string name="popular_requests">Popular requests</string>
     <array name="main_page_tab_titles">
         <item>Stocks</item>
         <item>Favourites</item>

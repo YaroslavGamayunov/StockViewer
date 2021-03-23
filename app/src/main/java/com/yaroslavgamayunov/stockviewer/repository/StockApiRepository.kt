@@ -11,6 +11,7 @@ import com.yaroslavgamayunov.stockviewer.vo.FavouriteStockItem
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import kotlinx.coroutines.flow.Flow
 
+// TODO: Create Separate repository for local operations(for methods where stock api is not needed)
 class StockApiRepository(
     private val iexCloudApiService: IexCloudApiService,
     private val finHubApiService: FinHubApiService,
@@ -40,6 +41,20 @@ class StockApiRepository(
             ),
             pagingSourceFactory = { db.stockItemDao().getFavourites() }
         ).flow
+    }
+
+    fun search(query: String): Flow<PagingData<StockItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                enablePlaceholders = true,
+            ),
+            pagingSourceFactory = { db.stockItemDao().searchItems(query) }
+        ).flow
+    }
+
+    suspend fun popularTickers(n: Int): List<String> {
+        return db.stockItemDao().popularTickers(n)
     }
 
     suspend fun favourite(ticker: String) {

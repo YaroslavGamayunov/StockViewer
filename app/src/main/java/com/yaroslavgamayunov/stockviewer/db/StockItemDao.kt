@@ -27,4 +27,10 @@ interface StockItemDao {
 
     @Query("DELETE FROM stock_items")
     suspend fun clearStockItems(): Int
+
+    @Query("SELECT * FROM stock_items WHERE ticker LIKE :query OR name LIKE :query ORDER BY ticker ASC")
+    fun searchItems(query: String): PagingSource<Int, StockItem>
+
+    @Query("SELECT ticker FROM stock_items ORDER BY (latestPrice - previousDayClosePrice) DESC LIMIT :n")
+    suspend fun popularTickers(n: Int): List<String>
 }

@@ -15,7 +15,7 @@ data class StockItem(
     val name: String,
     @SerializedName("previousClose")
     val previousDayClosePrice: Double,
-    val currentPrice: Double?,
+    val latestPrice: Double,
     val isFavourite: Boolean = false,
     val logoUrl: String
 )
