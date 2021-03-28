@@ -28,6 +28,16 @@
         app:layout_constraintStart_toStartOf="@id/stockChartCurrentPriceTextView"
         app:layout_constraintTop_toBottomOf="@id/stockChartCurrentPriceTextView" />
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stockChartPriceChangeTextView" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/stockDetailChart"
         android:layout_width="0dp"
@@ -36,10 +46,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockChartPriceChangeTextView"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/stockChartPriceChangeTextView">
 
     </com.github.mikephil.charting.charts.LineChart>
 
@@ -58,6 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:chipSpacingHorizontal="10dp"
+            app:selectionRequired="true"
             app:singleLine="true"
             app:singleSelection="true">
 

@@ -7,10 +7,14 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.yaroslavgamayunov.stockviewer.R
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.roundToLong
 
 class StockPriceMarkerView(
     context: Context,
     layoutResource: Int,
+    var highTimeRes: Boolean = false
 ) :
     MarkerView(context, layoutResource) {
     private val priceTextView: TextView = findViewById(R.id.stockPriceTextView)
@@ -22,11 +26,14 @@ class StockPriceMarkerView(
         e?.let {
             currentEntry = it
             priceTextView.text = "$${it.y}"
+            val time = (it.x.toDouble() * 1000).roundToLong()
+            val timeFormat = if (highTimeRes) "d MMM yyyy HH:mm" else "d MMM yyyy"
+            priceDateTextView.text = SimpleDateFormat(timeFormat, Locale.US).format(Date(time))
         }
         super.refreshContent(e, highlight)
     }
 
     override fun getOffset(): MPPointF {
-        return MPPointF((-(width / 2)).toFloat(), (-height).toFloat())
+        return MPPointF((-(width / 2)).toFloat(), (-height - 15).toFloat())
     }
 }

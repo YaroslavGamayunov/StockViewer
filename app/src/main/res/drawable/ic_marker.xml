@@ -8,8 +8,4 @@
         android:fillColor="?attr/colorSecondary"
         android:pathData="M30,0L256,0A30,30 0,0 1,286 30L286,110A30,30 0,0 1,256 140L30,140A30,30 0,0 1,0 110L0,30A30,30 0,0 1,30 0z"
         tools:ignore="VectorRaster" />
-    <path
-        android:fillColor="?attr/colorSecondary"
-        android:pathData="M143.364,159.059C138.686,159.059 127.019,146.392 108.364,121.059L178.364,121.059C159.708,146.392 148.042,159.059 143.364,159.059Z"
-        tools:ignore="VectorRaster" />
 </vector>

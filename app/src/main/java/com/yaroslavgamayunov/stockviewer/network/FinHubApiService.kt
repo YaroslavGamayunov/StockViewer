@@ -4,6 +4,7 @@ import com.yaroslavgamayunov.stockviewer.BuildConfig
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
 import com.yaroslavgamayunov.stockviewer.vo.IndexConstituentsResponse
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -19,14 +20,17 @@ interface FinHubApiService {
     suspend fun getHistoricalData(
         @Query("symbol") ticker: String,
         @Query("resolution") resolution: String,
-        @Query("from") from: Int,
-        @Query("to") to: Int
-    ): HistoricalCandleData
+        @Query("from") from: Long,
+        @Query("to") to: Long
+    ): HistoricalCandleData?
 
     companion object Factory {
         private const val BASE_URL = "https://finnhub.io/api/v1/"
 
         fun create(): FinHubApiService {
+            val logging = HttpLoggingInterceptor()
+            logging.level = HttpLoggingInterceptor.Level.BODY
+
             val client = OkHttpClient.Builder().addInterceptor { chain ->
                 var request = chain.request()
                 val url = request
@@ -36,7 +40,7 @@ interface FinHubApiService {
                     .build()
                 request = request.newBuilder().url(url).build()
                 return@addInterceptor chain.proceed(request)
-            }.build()
+            }.addInterceptor(logging).build()
 
             return Retrofit.Builder()
                 .baseUrl(BASE_URL)
