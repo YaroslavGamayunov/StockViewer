@@ -23,9 +23,21 @@
         <item name="tabSelectedTextColor">?attr/colorSecondary</item>
     </style>
 
+    <style name="StockChartChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipCornerRadius">12dp</item>
+        <item name="chipBackgroundColor">@color/chip_background_selector</item>
+        <item name="android:textColor">@color/chip_text_color_selector</item>
+        <item name="rippleColor">?attr/colorPrimaryVariant</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="chipStartPadding">10dp</item>
+        <item name="chipMinHeight">48dp</item>
+        <item name="chipEndPadding">10dp</item>
+    </style>
+
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">@dimen/textSizeBig</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>

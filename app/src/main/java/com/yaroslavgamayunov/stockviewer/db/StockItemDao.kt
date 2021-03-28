@@ -16,6 +16,9 @@ interface StockItemDao {
     @Query("SELECT * FROM stock_items ORDER BY ticker ASC")
     fun getAll(): PagingSource<Int, StockItem>
 
+    @Query("SELECT * FROM stock_items WHERE ticker=:ticker")
+    suspend fun getStockItem(ticker: String): StockItem
+
     @Query("SELECT * FROM stock_items WHERE isFavourite=1 ORDER BY ticker ASC")
     fun getFavourites(): PagingSource<Int, StockItem>
 

@@ -19,6 +19,10 @@ class StockViewModel(private val repository: StockApiRepository) : ViewModel() {
         return repository.favouriteItems().cachedIn(viewModelScope)
     }
 
+    suspend fun getStockItem(ticker: String): StockItem {
+        return repository.getStockItem(ticker)
+    }
+
 
     fun favourite(ticker: String) {
         viewModelScope.launch(Dispatchers.IO) {

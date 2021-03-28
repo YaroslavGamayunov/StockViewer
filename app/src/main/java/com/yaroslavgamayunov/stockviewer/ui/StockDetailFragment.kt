@@ -10,6 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.yaroslavgamayunov.stockviewer.R
 import com.yaroslavgamayunov.stockviewer.db.StockDatabase
 import com.yaroslavgamayunov.stockviewer.model.StockViewModel
@@ -17,6 +20,7 @@ import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
+import com.yaroslavgamayunov.stockviewer.ui.adapters.StockDetailViewPagerAdapter
 
 class StockDetailFragment : Fragment() {
 
@@ -84,6 +88,27 @@ class StockDetailFragment : Fragment() {
 
         lifecycleScope.launchWhenCreated {
             isFavourite = stockViewModel.isFavourite(args.ticker)
+            val item = stockViewModel.getStockItem(args.ticker)
+            toolbar.title = item.ticker
+            toolbar.subtitle = item.name
         }
+
+        setupViewPager()
+    }
+
+    private fun setupViewPager() {
+        val viewPager = requireView().findViewById<ViewPager2>(R.id.viewPager)
+        val tabLayout = requireView().findViewById<TabLayout>(R.id.tabLayout)
+        val adapter = StockDetailViewPagerAdapter(requireActivity(), args.ticker)
+        viewPager.adapter = adapter
+
+        val tabTitles =
+            requireActivity().resources.getStringArray(R.array.stock_detail_tab_titles)
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabTitles[position]
+            viewPager.setCurrentItem(tab.position, true)
+        }.attach()
+
+        viewPager.isUserInputEnabled = false
     }
 }

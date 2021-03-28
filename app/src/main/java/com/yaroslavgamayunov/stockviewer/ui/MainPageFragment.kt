@@ -11,8 +11,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yaroslavgamayunov.stockviewer.R
-import com.yaroslavgamayunov.stockviewer.ui.adapters.MainPageStockListFragmentAdapter
-import kotlin.math.min
+import com.yaroslavgamayunov.stockviewer.ui.adapters.MainPageViewPagerAdapter
 
 // TODO: Find out why data is not loaded on the first start of application
 class MainPageFragment : Fragment() {
@@ -31,16 +30,20 @@ class MainPageFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setupViewPager()
+    }
+
+    private fun setupViewPager() {
         val viewPager = requireView().findViewById<ViewPager2>(R.id.viewPager)
         val tabLayout = requireView().findViewById<TabLayout>(R.id.tabLayout)
-        val adapter = MainPageStockListFragmentAdapter(requireActivity())
+        val adapter = MainPageViewPagerAdapter(requireActivity())
         viewPager.adapter = adapter
 
         val tabTitles =
             requireActivity().resources.getStringArray(R.array.main_page_tab_titles)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = tabTitles[position]
-            viewPager.setCurrentItem(min(tab.position, 5), true)
+            viewPager.setCurrentItem(tab.position, true)
         }.attach()
 
         viewPager.isUserInputEnabled = false

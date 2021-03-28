@@ -2,10 +2,9 @@ package com.yaroslavgamayunov.stockviewer.ui.adapters
 
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.yaroslavgamayunov.stockviewer.ui.StockListFilter
 import com.yaroslavgamayunov.stockviewer.ui.StockListFragment
 
-class MainPageStockListFragmentAdapter(activity: FragmentActivity) :
+class MainPageViewPagerAdapter(activity: FragmentActivity) :
     FragmentStateAdapter(activity) {
 
     override fun getItemCount() = StockListFilter.values().size

@@ -53,6 +53,10 @@ class StockApiRepository(
         ).flow
     }
 
+    suspend fun getStockItem(ticker: String): StockItem {
+        return db.stockItemDao().getStockItem(ticker)
+    }
+
     suspend fun popularTickers(n: Int): List<String> {
         return db.stockItemDao().popularTickers(n)
     }

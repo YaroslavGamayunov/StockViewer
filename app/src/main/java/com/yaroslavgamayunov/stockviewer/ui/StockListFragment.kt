@@ -18,6 +18,7 @@ import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListAdapter
+import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListFilter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
