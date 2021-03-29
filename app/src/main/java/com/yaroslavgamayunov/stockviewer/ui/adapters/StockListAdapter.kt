@@ -61,7 +61,6 @@ class StockListAdapter(
                 tickerTextView.text = item.ticker
                 companyNameTextView.text = item.name
 
-                // TODO: Handle different currencies
                 stockItemPriceTextView.text = "$${item.previousDayClosePrice}"
 
                 val favButtonDrawableRes =

@@ -34,6 +34,7 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private lateinit var popularTickersAdapter: StockChipsAdapter
 
     private lateinit var searchMotionLayout: MotionLayout
+    private lateinit var searchView: SearchView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,8 +44,9 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.findViewById<SearchView>(R.id.stockSearchView)
-            .setOnQueryTextListener(this@StockSearchFragment)
+        searchView = view.findViewById<SearchView>(R.id.stockSearchView).also {
+            it.setOnQueryTextListener(this@StockSearchFragment)
+        }
 
         view.findViewById<View>(R.id.stockSearchFragmentBackButton).setOnClickListener {
             findNavController().navigateUp()
@@ -53,14 +55,25 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         searchMotionLayout = view.findViewById(R.id.stockSearchMotionLayout)
 
         searchListAdapter = StockListAdapter(onItemClick = { stockItem ->
-            //TODO: Find out how to handle other fragments (if current destination is not just a MainPageFragment)
-            val action = MainPageFragmentDirections
-                .actionMainPageFragmentToStockDetailsFragment(stockItem.ticker)
-            findNavController().navigate(action)
+            when (findNavController().currentDestination?.id) {
+                R.id.mainPageFragment -> {
+                    val action = MainPageFragmentDirections
+                        .actionMainPageFragmentToStockDetailsFragment(stockItem.ticker)
+                    findNavController().navigate(action)
+                }
+                R.id.stockSearchFragment -> {
+                    val action = StockSearchFragmentDirections
+                        .actionStockSearchFragmentToStockDetailFragment(stockItem.ticker)
+                    findNavController().navigate(action)
+                }
+            }
         })
         view.findViewById<RecyclerView>(R.id.searchResultsRecyclerView).adapter = searchListAdapter
 
-        popularTickersAdapter = StockChipsAdapter()
+        popularTickersAdapter = StockChipsAdapter(onClick = {
+            searchView.setQuery(it, true)
+        })
+
         view.findViewById<RecyclerView>(R.id.popularTickersRecyclerView).apply {
             adapter = popularTickersAdapter
             layoutManager =

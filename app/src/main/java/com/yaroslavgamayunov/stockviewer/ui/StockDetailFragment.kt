@@ -15,7 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yaroslavgamayunov.stockviewer.R
 import com.yaroslavgamayunov.stockviewer.db.StockDatabase
-import com.yaroslavgamayunov.stockviewer.model.StockViewModel
+import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
@@ -25,7 +25,7 @@ import com.yaroslavgamayunov.stockviewer.ui.adapters.StockDetailViewPagerAdapter
 class StockDetailFragment : Fragment() {
 
     val args: StockDetailFragmentArgs by navArgs()
-    lateinit var stockViewModel: StockViewModel
+    lateinit var stockDatabaseViewModel: StockDatabaseViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +42,9 @@ class StockDetailFragment : Fragment() {
                 if (value) R.drawable.ic_round_star_inactive_24 else R.drawable.ic_round_star_border_24
             toolbar.menu.findItem(R.id.actionFavourite).setIcon(drawableRes)
             if (value) {
-                stockViewModel.favourite(args.ticker)
+                stockDatabaseViewModel.favourite(args.ticker)
             } else {
-                stockViewModel.unfavourite(args.ticker)
+                stockDatabaseViewModel.unfavourite(args.ticker)
             }
             field = value
         }
@@ -80,15 +80,15 @@ class StockDetailFragment : Fragment() {
             )
         )
 
-        stockViewModel =
+        stockDatabaseViewModel =
             ViewModelProvider(
                 requireActivity(),
                 factory
-            ).get(StockViewModel::class.java)
+            ).get(StockDatabaseViewModel::class.java)
 
         lifecycleScope.launchWhenCreated {
-            isFavourite = stockViewModel.isFavourite(args.ticker)
-            val item = stockViewModel.getStockItem(args.ticker)
+            isFavourite = stockDatabaseViewModel.isFavourite(args.ticker)
+            val item = stockDatabaseViewModel.getStockItem(args.ticker)
             toolbar.title = item.ticker
             toolbar.subtitle = item.name
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="stockItemCardCornerRadius">12dp</dimen>
+    <dimen name="newsImageCornerRadius">10dp</dimen>
     <dimen name="stockItemLogoImageSize">56dp</dimen>
     <dimen name="searchViewHeight">48dp</dimen>
     <dimen name="popularTickersPanelHeight">80dp</dimen>

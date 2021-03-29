@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -20,7 +21,8 @@ import com.google.android.material.color.MaterialColors
 import com.yaroslavgamayunov.stockviewer.R
 import com.yaroslavgamayunov.stockviewer.databinding.FragmentStockChartBinding
 import com.yaroslavgamayunov.stockviewer.db.StockDatabase
-import com.yaroslavgamayunov.stockviewer.model.StockViewModel
+import com.yaroslavgamayunov.stockviewer.model.StockApiViewModel
+import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
@@ -34,7 +36,8 @@ import kotlinx.coroutines.withContext
 
 class StockChartFragment : Fragment() {
     private var binding: FragmentStockChartBinding? = null
-    private lateinit var stockViewModel: StockViewModel
+    private lateinit var stockDatabaseViewModel: StockDatabaseViewModel
+    private lateinit var stockApiViewModel: StockApiViewModel
     private lateinit var marker: StockPriceMarkerView
 
     override fun onCreateView(
@@ -46,7 +49,6 @@ class StockChartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentStockChartBinding.bind(view)
-        setupChart()
     }
 
     override fun onDestroyView() {
@@ -65,14 +67,31 @@ class StockChartFragment : Fragment() {
             )
         )
 
-        stockViewModel =
+        stockDatabaseViewModel =
             ViewModelProvider(
                 requireActivity(),
                 factory
-            ).get(StockViewModel::class.java)
+            ).get(StockDatabaseViewModel::class.java)
+
+        stockApiViewModel = ViewModelProvider(
+            requireActivity(),
+            factory
+        ).get(StockApiViewModel::class.java)
+
+        setupChart()
     }
 
     private fun setupChart() {
+        val ticker = requireArguments().getString(STOCK_TICKER_TAG)!!
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val currentPrice = stockDatabaseViewModel.getStockItem(ticker).latestPrice
+            withContext(Dispatchers.Main) {
+                requireView().findViewById<TextView>(R.id.stockChartCurrentPriceTextView).text =
+                    "$${currentPrice}"
+            }
+        }
+
         val chart = binding!!.stockDetailChart
         // These 3 lines remove grid
         chart.xAxis.isEnabled = false
@@ -98,8 +117,6 @@ class StockChartFragment : Fragment() {
         val chartPaint = chart.getPaint(Chart.PAINT_INFO);
         chartPaint.textSize = 30f
         chartPaint.color = MaterialColors.getColor(chart, R.attr.colorSecondary)
-
-        val ticker = requireArguments().getString(STOCK_TICKER_TAG)!!
 
         binding!!.stockChartDayButton.setOnClickListener {
             loadAndSetChartData(ticker, StockDataDuration.Day)
@@ -138,7 +155,7 @@ class StockChartFragment : Fragment() {
                 binding!!.stockDetailChart.visibility = View.INVISIBLE
             }
 
-            val data = stockViewModel.getHistoricalCandleData(
+            val data = stockApiViewModel.getHistoricalCandleData(
                 ticker,
                 duration
             )
@@ -175,10 +192,7 @@ class StockChartFragment : Fragment() {
 
         // Smoothing linechart
         dataSet.lineWidth = 2f
-        dataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-        //to enable the cubic density : if 1 then it will be sharp curve
-
-        dataSet.cubicIntensity = 0.2f
+        dataSet.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
 
         // Highlight
         dataSet.color = MaterialColors.getColor(chart, R.attr.colorSecondary)

@@ -9,8 +9,10 @@ import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.vo.FavouriteStockItem
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
+import com.yaroslavgamayunov.stockviewer.vo.NewsItem
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import kotlinx.coroutines.flow.Flow
+import java.text.SimpleDateFormat
 import java.util.*
 
 // TODO: Create Separate repository for local operations(for methods where stock api is not needed)
@@ -91,6 +93,12 @@ class StockApiRepository(
             duration.startTime,
             duration.endTime
         )
+    }
+
+    suspend fun getNews(ticker: String, startTime: Long, endTime: Long): List<NewsItem> {
+        val startDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(startTime))
+        val endDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(endTime))
+        return finHubApiService.getNews(ticker, startDate, endDate)
     }
 
 

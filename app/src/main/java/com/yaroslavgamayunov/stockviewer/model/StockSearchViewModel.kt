@@ -22,8 +22,6 @@ class StockSearchViewModel(private val repository: StockApiRepository) : ViewMod
     }
 
     fun search(query: String?): Flow<PagingData<StockItem>> {
-        // TODO: Use better way of searching
-
         viewModelScope.launch {
             _searchState
                 .emit(if (query.isNullOrEmpty()) SearchState.Empty else SearchState.OnQuery(query))

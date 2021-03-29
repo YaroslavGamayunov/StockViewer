@@ -11,22 +11,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="$131.93"
         android:textColor="?attr/colorSecondary"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/stockChartPriceChangeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="+0.12(1,15%)"
-        app:layout_constraintEnd_toEndOf="@id/stockChartCurrentPriceTextView"
-        app:layout_constraintStart_toStartOf="@id/stockChartCurrentPriceTextView"
-        app:layout_constraintTop_toBottomOf="@id/stockChartCurrentPriceTextView" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="$131.93" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -36,7 +27,7 @@
         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockChartPriceChangeTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/stockChartCurrentPriceTextView" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/stockDetailChart"
@@ -47,7 +38,7 @@
         app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stockChartPriceChangeTextView">
+        app:layout_constraintTop_toBottomOf="@+id/stockChartCurrentPriceTextView">
 
     </com.github.mikephil.charting.charts.LineChart>
 

@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.yaroslavgamayunov.stockviewer.R
 import com.yaroslavgamayunov.stockviewer.db.StockDatabase
-import com.yaroslavgamayunov.stockviewer.model.StockViewModel
+import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 class StockListFragment : Fragment() {
 
-    lateinit var stockViewModel: StockViewModel
+    lateinit var stockDatabaseViewModel: StockDatabaseViewModel
 
     lateinit var recyclerView: RecyclerView
     lateinit var listAdapter: StockListAdapter
@@ -50,11 +50,11 @@ class StockListFragment : Fragment() {
                 StockDatabase.getInstance(requireActivity().applicationContext)
             )
         )
-        stockViewModel =
+        stockDatabaseViewModel =
             ViewModelProvider(
                 requireActivity(),
                 factory
-            ).get(StockViewModel::class.java)
+            ).get(StockDatabaseViewModel::class.java)
 
         setupList(arguments)
     }
@@ -76,12 +76,12 @@ class StockListFragment : Fragment() {
         lifecycleScope.launch {
             when (filter) {
                 StockListFilter.ALL ->
-                    stockViewModel.getStocksForIndexPaged("^NDX").collectLatest {
+                    stockDatabaseViewModel.getStocksForIndexPaged("^NDX").collectLatest {
                         listAdapter.submitData(it)
                     }
 
                 StockListFilter.FAVOURITES ->
-                    stockViewModel.getFavouriteStocksPaged().collectLatest {
+                    stockDatabaseViewModel.getFavouriteStocksPaged().collectLatest {
                         listAdapter.submitData(it)
                     }
             }

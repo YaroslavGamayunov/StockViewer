@@ -29,5 +29,9 @@
         android:id="@+id/stockSearchFragment"
         android:name="com.yaroslavgamayunov.stockviewer.ui.StockSearchFragment"
         android:label="fragment_stock_search"
-        tools:layout="@layout/fragment_stock_search" />
+        tools:layout="@layout/fragment_stock_search">
+        <action
+            android:id="@+id/action_stockSearchFragment_to_stockDetailFragment"
+            app:destination="@id/stockDetailFragment" />
+    </fragment>
 </navigation>

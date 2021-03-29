@@ -3,6 +3,7 @@ package com.yaroslavgamayunov.stockviewer.network
 import com.yaroslavgamayunov.stockviewer.BuildConfig
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
 import com.yaroslavgamayunov.stockviewer.vo.IndexConstituentsResponse
+import com.yaroslavgamayunov.stockviewer.vo.NewsItem
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,6 +24,13 @@ interface FinHubApiService {
         @Query("from") from: Long,
         @Query("to") to: Long
     ): HistoricalCandleData?
+
+    @GET("company-news")
+    suspend fun getNews(
+        @Query("symbol") ticker: String,
+        @Query("from") from: String,
+        @Query("to") to: String
+    ): List<NewsItem>
 
     companion object Factory {
         private const val BASE_URL = "https://finnhub.io/api/v1/"
