@@ -35,7 +35,7 @@ class StockPageKeyedRemoteMediator(
                 remoteKeys?.prevKey ?: return MediatorResult.Success(true)
             }
             LoadType.APPEND -> {
-                val lastItem = state.lastItemOrNull() ?: return MediatorResult.Success(true)
+                val lastItem = state.lastItemOrNull() ?: return MediatorResult.Success(false)
 
                 val remoteKeys = db.remoteKeysDao().remoteKeysByTicker(lastItem.ticker)
                 remoteKeys?.nextKey ?: return MediatorResult.Success(true)
