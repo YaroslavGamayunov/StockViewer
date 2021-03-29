@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/mainPageFragment">
+    <fragment
+        android:id="@+id/mainPageFragment"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page">
+        <action
+            android:id="@+id/action_mainPageFragment_to_stockDetailsFragment"
+            app:destination="@id/stockDetailFragment" />
+        <action
+            android:id="@+id/action_mainPageFragment_to_stockSearchFragment"
+            app:destination="@id/stockSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockDetailFragment"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.StockDetailFragment"
+        android:label="fragment_stock_details"
+        tools:layout="@layout/fragment_stock_detail">
+        <argument
+            android:name="ticker"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/stockSearchFragment"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.StockSearchFragment"
+        android:label="fragment_stock_search"
+        tools:layout="@layout/fragment_stock_search">
+        <action
+            android:id="@+id/action_stockSearchFragment_to_stockDetailFragment"
+            app:destination="@id/stockDetailFragment" />
+    </fragment>
+</navigation>

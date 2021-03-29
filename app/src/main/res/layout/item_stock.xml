@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="?attr/colorPrimaryVariant"
+    app:cardCornerRadius="@dimen/stockItemCardCornerRadius"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/stockItemCompanyLogoImageView"
+            android:layout_width="@dimen/stockItemLogoImageSize"
+            android:layout_height="@dimen/stockItemLogoImageSize"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/logo_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/stockItemTickerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/stockItemCompanyNameTextView"
+            app:layout_constraintStart_toEndOf="@+id/stockItemCompanyLogoImageView"
+            app:layout_constraintTop_toTopOf="@+id/stockItemCompanyLogoImageView"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="MSFT" />
+
+        <TextView
+            android:id="@+id/stockItemCompanyNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/stockItemCompanyLogoImageView"
+            app:layout_constraintEnd_toStartOf="@+id/stockItemPriceChangeTextView"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/stockItemTickerTextView"
+            app:layout_constraintTop_toBottomOf="@+id/stockItemTickerTextView"
+            tools:text="Microsoft corporation" />
+
+        <TextView
+            android:id="@+id/stockItemPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textColor="?attr/colorOnPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/stockItemTickerTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stockItemTickerTextView"
+            tools:text="$1 825" />
+
+        <TextView
+            android:id="@+id/stockItemPriceChangeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/updated_long_ago"
+            android:textAllCaps="false"
+            android:textColor="@color/color_on_primary_light"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/stockItemCompanyNameTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stockItemCompanyNameTextView" />
+
+
+        <ImageButton
+            android:id="@+id/favouriteImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_round_star_active_24"
+            app:layout_constraintBottom_toBottomOf="@+id/stockItemTickerTextView"
+            app:layout_constraintStart_toEndOf="@+id/stockItemTickerTextView"
+            app:layout_constraintTop_toTopOf="@+id/stockItemTickerTextView"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

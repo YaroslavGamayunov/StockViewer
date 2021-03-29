@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">StockViewer</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="updated_long_ago">Updated long ago</string>
+    <string name="add_to_favourites">Add to favourites</string>
+    <string name="find_company_or_ticker">Find company or ticker</string>
+    <string name="popular_requests">Popular requests</string>
+    <string name="day_short">D</string>
+    <string name="week_short">W</string>
+    <string name="month_short">M</string>
+    <string name="half_year_short">6M</string>
+    <string name="year_short">1Y</string>
+    <string name="all">All</string>
+    <array name="main_page_tab_titles">
+        <item>Stocks</item>
+        <item>Favourites</item>
+    </array>
+
+    <array name="stock_detail_tab_titles">
+        <item>Chart</item>
+        <item>News</item>
+    </array>
 </resources>
