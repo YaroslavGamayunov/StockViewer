@@ -13,7 +13,6 @@ import com.yaroslavgamayunov.stockviewer.model.StockApiViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockNewsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,9 +21,6 @@ import java.util.*
 
 class CompanyNewsFragment : Fragment() {
     lateinit var stockApiViewModel: StockApiViewModel
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,11 +32,9 @@ class CompanyNewsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val factory = StockViewModelFactory(
-            StockApiRepository(
-                IexCloudApiService.create(),
-                FinHubApiService.create(),
-                StockDatabase.getInstance(requireActivity().applicationContext)
-            )
+            IexCloudApiService.create(),
+            FinHubApiService.create(),
+            StockDatabase.getInstance(requireActivity().applicationContext)
         )
 
         stockApiViewModel =

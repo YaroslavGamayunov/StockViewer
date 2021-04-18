@@ -10,8 +10,8 @@ import com.google.android.material.chip.Chip
 import com.yaroslavgamayunov.stockviewer.R
 
 
-class StockChipsAdapter(val onClick: (String) -> Unit) :
-    ListAdapter<String, StockChipsAdapter.ChipViewHolder>(ITEM_COMPARATOR) {
+class ChipListAdapter(val onClick: (String) -> Unit) :
+    ListAdapter<String, ChipListAdapter.ChipViewHolder>(ITEM_COMPARATOR) {
     class ChipViewHolder(view: View, val onClick: (String) -> Unit) :
         RecyclerView.ViewHolder(view) {
         private val tickerChip: Chip = view.findViewById(R.id.stockTickerChip)
@@ -24,7 +24,7 @@ class StockChipsAdapter(val onClick: (String) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChipViewHolder {
         val view = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.item_stock_chip, parent, false)
+            .inflate(R.layout.item_chip, parent, false)
         return ChipViewHolder(view, onClick)
     }
 

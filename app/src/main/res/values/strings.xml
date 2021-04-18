@@ -18,6 +18,7 @@
 
     <array name="stock_detail_tab_titles">
         <item>Chart</item>
+        <item>Summary</item>
         <item>News</item>
     </array>
 </resources>

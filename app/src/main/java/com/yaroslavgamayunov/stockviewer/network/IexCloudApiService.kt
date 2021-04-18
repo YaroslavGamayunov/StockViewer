@@ -3,6 +3,7 @@ package com.yaroslavgamayunov.stockviewer.network
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.yaroslavgamayunov.stockviewer.BuildConfig
+import com.yaroslavgamayunov.stockviewer.vo.CompanyInfo
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import com.yaroslavgamayunov.stockviewer.vo.StockItemListResponseDeserializer
 import okhttp3.OkHttpClient
@@ -10,6 +11,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 
@@ -18,6 +20,9 @@ interface IexCloudApiService {
     suspend fun getStockItems(
         @Query("symbols", encoded = true) tickers: String,
     ): List<StockItem>
+
+    @GET("/stable/stock/{symbol}/company")
+    suspend fun getCompanyInfo(@Path("symbol") ticker: String): CompanyInfo
 
     companion object Factory {
         private const val BASE_URL = "https://cloud.iexapis.com/v1/"

@@ -4,6 +4,7 @@ import CompanyNewsFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.yaroslavgamayunov.stockviewer.ui.CompanyInfoFragment
 import com.yaroslavgamayunov.stockviewer.ui.StockChartFragment
 
 class StockDetailViewPagerAdapter(activity: FragmentActivity, val ticker: String) :
@@ -19,6 +20,9 @@ class StockDetailViewPagerAdapter(activity: FragmentActivity, val ticker: String
             }
             StockDetailTabType.NEWS -> {
                 CompanyNewsFragment.newInstance(ticker)
+            }
+            StockDetailTabType.SUMMARY -> {
+                CompanyInfoFragment.newInstance(ticker)
             }
         }
     }
