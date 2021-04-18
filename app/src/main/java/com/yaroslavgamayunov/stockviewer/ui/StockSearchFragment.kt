@@ -19,8 +19,7 @@ import com.yaroslavgamayunov.stockviewer.model.StockSearchViewModel.SearchState
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
-import com.yaroslavgamayunov.stockviewer.ui.adapters.StockChipsAdapter
+import com.yaroslavgamayunov.stockviewer.ui.adapters.ChipListAdapter
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -31,7 +30,7 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     private lateinit var stockSearchViewModel: StockSearchViewModel
 
     private lateinit var searchListAdapter: StockListAdapter
-    private lateinit var popularTickersAdapter: StockChipsAdapter
+    private lateinit var popularTickersAdapter: ChipListAdapter
 
     private lateinit var searchMotionLayout: MotionLayout
     private lateinit var searchView: SearchView
@@ -70,7 +69,7 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
         })
         view.findViewById<RecyclerView>(R.id.searchResultsRecyclerView).adapter = searchListAdapter
 
-        popularTickersAdapter = StockChipsAdapter(onClick = {
+        popularTickersAdapter = ChipListAdapter(onClick = {
             searchView.setQuery(it, true)
         })
 
@@ -84,12 +83,11 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val factory = StockViewModelFactory(
-            StockApiRepository(
-                IexCloudApiService.create(),
-                FinHubApiService.create(),
-                StockDatabase.getInstance(requireActivity().applicationContext)
-            )
+            IexCloudApiService.create(),
+            FinHubApiService.create(),
+            StockDatabase.getInstance(requireActivity().applicationContext)
         )
+
         stockSearchViewModel =
             ViewModelProvider(
                 requireActivity(),

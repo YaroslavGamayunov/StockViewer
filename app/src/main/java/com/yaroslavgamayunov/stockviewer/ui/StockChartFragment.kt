@@ -26,7 +26,6 @@ import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 import com.yaroslavgamayunov.stockviewer.repository.StockDataDuration
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockPriceMarkerView
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
@@ -60,11 +59,9 @@ class StockChartFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val factory = StockViewModelFactory(
-            StockApiRepository(
-                IexCloudApiService.create(),
-                FinHubApiService.create(),
-                StockDatabase.getInstance(requireActivity().applicationContext)
-            )
+            IexCloudApiService.create(),
+            FinHubApiService.create(),
+            StockDatabase.getInstance(requireActivity().applicationContext)
         )
 
         stockDatabaseViewModel =
@@ -114,7 +111,7 @@ class StockChartFragment : Fragment() {
         marker.chartView = chart
         chart.marker = marker
 
-        val chartPaint = chart.getPaint(Chart.PAINT_INFO);
+        val chartPaint = chart.getPaint(Chart.PAINT_INFO)
         chartPaint.textSize = 30f
         chartPaint.color = MaterialColors.getColor(chart, R.attr.colorSecondary)
 
@@ -141,6 +138,8 @@ class StockChartFragment : Fragment() {
         binding!!.stockChartAllButton.setOnClickListener {
             loadAndSetChartData(ticker, StockDataDuration.All)
         }
+
+        loadAndSetChartData(ticker, StockDataDuration.Day)
     }
 
     private fun loadAndSetChartData(

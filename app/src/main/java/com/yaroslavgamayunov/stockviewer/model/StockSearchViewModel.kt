@@ -3,7 +3,7 @@ package com.yaroslavgamayunov.stockviewer.model
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
+import com.yaroslavgamayunov.stockviewer.repository.StockDatabaseRepository
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
-class StockSearchViewModel(private val repository: StockApiRepository) : ViewModel() {
+class StockSearchViewModel(private val repository: StockDatabaseRepository) : ViewModel() {
     private val _searchState = MutableStateFlow<SearchState>(SearchState.Empty)
 
     val searchState = _searchState.asStateFlow()

@@ -19,7 +19,6 @@ import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockDetailViewPagerAdapter
 
 class StockDetailFragment : Fragment() {
@@ -73,11 +72,9 @@ class StockDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         val factory = StockViewModelFactory(
-            StockApiRepository(
-                IexCloudApiService.create(),
-                FinHubApiService.create(),
-                StockDatabase.getInstance(requireActivity().applicationContext)
-            )
+            IexCloudApiService.create(),
+            FinHubApiService.create(),
+            StockDatabase.getInstance(requireActivity().applicationContext)
         )
 
         stockDatabaseViewModel =

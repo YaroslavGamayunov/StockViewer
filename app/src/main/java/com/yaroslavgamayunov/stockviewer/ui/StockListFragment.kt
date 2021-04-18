@@ -16,7 +16,6 @@ import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListAdapter
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListFilter
 import kotlinx.coroutines.flow.collectLatest
@@ -44,11 +43,9 @@ class StockListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val factory = StockViewModelFactory(
-            StockApiRepository(
-                IexCloudApiService.create(),
-                FinHubApiService.create(),
-                StockDatabase.getInstance(requireActivity().applicationContext)
-            )
+            IexCloudApiService.create(),
+            FinHubApiService.create(),
+            StockDatabase.getInstance(requireActivity().applicationContext)
         )
         stockDatabaseViewModel =
             ViewModelProvider(

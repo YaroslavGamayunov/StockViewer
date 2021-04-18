@@ -4,13 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
+import com.yaroslavgamayunov.stockviewer.repository.StockDatabaseRepository
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class StockDatabaseViewModel(private val repository: StockApiRepository) : ViewModel() {
+class StockDatabaseViewModel(private val repository: StockDatabaseRepository) : ViewModel() {
     fun getStocksForIndexPaged(stockIndex: String): Flow<PagingData<StockItem>> {
         return repository.allItems(stockIndex).cachedIn(viewModelScope)
     }
