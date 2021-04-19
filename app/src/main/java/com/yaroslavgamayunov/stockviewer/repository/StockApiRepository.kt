@@ -2,6 +2,7 @@ package com.yaroslavgamayunov.stockviewer.repository
 
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
+import com.yaroslavgamayunov.stockviewer.utils.safeApiCall
 import com.yaroslavgamayunov.stockviewer.vo.CompanyInfo
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
 import com.yaroslavgamayunov.stockviewer.vo.NewsItem
@@ -16,22 +17,26 @@ class StockApiRepository(
         ticker: String,
         duration: StockDataDuration
     ): HistoricalCandleData? {
-        return finHubApiService.getHistoricalData(
-            ticker,
-            duration.resolution,
-            duration.startTime,
-            duration.endTime
-        )
+        return safeApiCall {
+            finHubApiService.getHistoricalData(
+                ticker,
+                duration.resolution,
+                duration.startTime,
+                duration.endTime
+            )
+        }
     }
 
-    suspend fun getNews(ticker: String, startTime: Long, endTime: Long): List<NewsItem> {
+    suspend fun getNews(ticker: String, startTime: Long, endTime: Long): List<NewsItem>? {
         val startDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(startTime))
         val endDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(endTime))
-        return finHubApiService.getNews(ticker, startDate, endDate)
+        return safeApiCall {
+            finHubApiService.getNews(ticker, startDate, endDate)
+        }
     }
 
-    suspend fun getCompanyInfo(ticker: String): CompanyInfo {
-        return iexCloudApiService.getCompanyInfo(ticker)
+    suspend fun getCompanyInfo(ticker: String): CompanyInfo? {
+        return safeApiCall { iexCloudApiService.getCompanyInfo(ticker) }
     }
 }
 

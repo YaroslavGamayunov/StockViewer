@@ -86,10 +86,24 @@ class CompanyInfoFragment : Fragment() {
 
             val companyInfo = stockApiViewModel.getCompanyInfo(ticker)
 
+            if (companyInfo == null) {
+                tryToReloadCompanyInfo(ticker)
+            }
+
             withContext(Dispatchers.Main) {
-                updateCompanyInfoLayout(companyInfo)
+                if (companyInfo != null) {
+                    updateCompanyInfoLayout(companyInfo)
+                }
                 binding!!.companyInfoConstraintLayout.visibility = View.VISIBLE
                 binding!!.progressBar.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    private fun tryToReloadCompanyInfo(ticker: String) {
+        if (activity is MainActivity) {
+            (activity as MainActivity).showRetrySnackbar(R.string.message_unstable_internet) {
+                loadCompanyInfo(ticker)
             }
         }
     }
