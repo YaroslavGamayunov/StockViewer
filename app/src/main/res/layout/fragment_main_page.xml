@@ -13,38 +13,47 @@
         android:layout_height="wrap_content"
         app:liftOnScroll="true">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/mainPageSearchCard"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/searchViewHeight"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="?attr/actionBarSize"
-            app:cardElevation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:strokeColor="?attr/colorSecondary"
-            app:strokeWidth="0.8dp">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:orientation="horizontal">
+            <TextView
+                android:id="@+id/mainPageSearchTextView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/searchViewHeight"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ripple_searchview"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:padding="8dp"
+                android:text="@string/find_company_or_ticker"
+                android:textColor="?attr/colorOnPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:drawableLeftCompat="@drawable/ic_round_search_24"
+                app:drawableTint="?attr/colorOnPrimary"
+                app:layout_constraintEnd_toStartOf="@id/settingsImageButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="4dp"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:lines="1"
-                    android:text="@string/find_company_or_ticker"
-                    android:textColor="?attr/colorOnPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:drawableLeftCompat="@drawable/ic_round_search_24"
-                    app:drawableTint="?attr/colorOnPrimary" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            <ImageView
+                android:id="@+id/settingsImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginEnd="16dp"
+                android:background="?actionBarItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:src="@drawable/ic_round_settings_24"
+                app:layout_constraintBottom_toBottomOf="@+id/mainPageSearchTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/mainPageSearchTextView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <com.google.android.material.tabs.TabLayout

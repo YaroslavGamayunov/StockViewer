@@ -40,4 +40,10 @@
         <item name="android:textSize">@dimen/textSizeBig</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="SettingsMenuTitleTextAppearance" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/textSizeSettingsTitle</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

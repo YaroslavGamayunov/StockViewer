@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         anchorView: View? = null,
         retryAction: () -> Unit
     ) {
-        Snackbar.make(findViewById(R.id.contentView), textResId, Snackbar.LENGTH_LONG)
+        Snackbar.make(findViewById(R.id.contentView), textResId, Snackbar.LENGTH_SHORT)
             .setActionTextColor(Color.YELLOW)
             .setAnchorView(anchorView)
             .setAction(R.string.retry) { retryAction() }.show()

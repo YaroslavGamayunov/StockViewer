@@ -35,7 +35,7 @@ interface IexCloudApiService {
             val client = OkHttpClient.Builder().addInterceptor { chain ->
                 var request = chain.request()
                 val url = request
-                    .url()
+                    .url
                     .newBuilder()
                     .addQueryParameter("token", BuildConfig.IEX_API_TOKEN)
                     .build()

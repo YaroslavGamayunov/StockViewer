@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StockViewer">
-        <activity
+
+    <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
