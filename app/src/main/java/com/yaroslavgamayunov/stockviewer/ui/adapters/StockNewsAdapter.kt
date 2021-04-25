@@ -42,7 +42,10 @@ class StockNewsAdapter : ListAdapter<NewsItem, StockNewsAdapter.ViewHolder>(ITEM
             newsHeadlineTextView.text = item.headline
             newsSummaryTextView.text = item.summary
             newsDateTextView.text =
-                SimpleDateFormat("d MMM HH:mm", Locale.US).format(Date(item.date))
+                SimpleDateFormat(
+                    "EEE, d MMM HH:mm",
+                    Locale.US
+                ).format(Date(item.date * 1000))
             bindLogo(item.imageUrl)
 
             itemView.setOnClickListener {

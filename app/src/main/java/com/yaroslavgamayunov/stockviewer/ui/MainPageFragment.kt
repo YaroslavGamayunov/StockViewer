@@ -4,10 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yaroslavgamayunov.stockviewer.R
@@ -23,8 +24,12 @@ class MainPageFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.findViewById<MaterialCardView>(R.id.mainPageSearchCard).setOnClickListener {
+        // TODO Rename mainPageSearchTextView
+        view.findViewById<TextView>(R.id.mainPageSearchTextView).setOnClickListener {
             findNavController().navigate(R.id.action_mainPageFragment_to_stockSearchFragment)
+        }
+        view.findViewById<ImageView>(R.id.settingsImageButton).setOnClickListener {
+            findNavController().navigate(R.id.action_mainPageFragment_to_settingsFragment)
         }
     }
 

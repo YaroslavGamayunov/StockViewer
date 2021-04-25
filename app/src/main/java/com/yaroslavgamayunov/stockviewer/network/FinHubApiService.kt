@@ -42,7 +42,7 @@ interface FinHubApiService {
             val client = OkHttpClient.Builder().addInterceptor { chain ->
                 var request = chain.request()
                 val url = request
-                    .url()
+                    .url
                     .newBuilder()
                     .addQueryParameter("token", BuildConfig.FINHUB_API_TOKEN)
                     .build()

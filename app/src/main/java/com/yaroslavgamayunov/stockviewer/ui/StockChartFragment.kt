@@ -159,10 +159,28 @@ class StockChartFragment : Fragment() {
                 duration
             )
 
+            if (data == null) {
+                tryToReloadChartData(ticker, duration)
+            }
+
             withContext(Dispatchers.Main) {
                 binding!!.progressBar.visibility = View.INVISIBLE
                 binding!!.stockDetailChart.visibility = View.VISIBLE
                 setChartData(data)
+            }
+        }
+    }
+
+    private fun tryToReloadChartData(
+        ticker: String,
+        duration: StockDataDuration
+    ) {
+        if (activity is MainActivity) {
+            (activity as MainActivity).showRetrySnackbar(
+                R.string.message_unstable_internet,
+                anchorView = binding?.horizontalScrollView
+            ) {
+                loadAndSetChartData(ticker, duration)
             }
         }
     }

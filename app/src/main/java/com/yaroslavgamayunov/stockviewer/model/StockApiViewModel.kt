@@ -8,7 +8,7 @@ import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
 import com.yaroslavgamayunov.stockviewer.vo.NewsItem
 
 class StockApiViewModel(private val repository: StockApiRepository) : ViewModel() {
-    suspend fun getNews(ticker: String, startTime: Long, endTime: Long): List<NewsItem> {
+    suspend fun getNews(ticker: String, startTime: Long, endTime: Long): List<NewsItem>? {
         return repository.getNews(ticker, startTime, endTime)
     }
 
@@ -19,7 +19,7 @@ class StockApiViewModel(private val repository: StockApiRepository) : ViewModel(
         return repository.getHistoricalData(ticker, duration)
     }
 
-    suspend fun getCompanyInfo(ticker: String): CompanyInfo {
+    suspend fun getCompanyInfo(ticker: String): CompanyInfo? {
         return repository.getCompanyInfo(ticker)
     }
 }

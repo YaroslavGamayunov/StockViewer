@@ -61,7 +61,6 @@ class StockListFragment : Fragment() {
 
         listAdapter = StockListAdapter(
             onItemClick = { stockItem ->
-                //TODO: Find out how to handle other fragments (if current destination is not just a MainPageFragment)
                 val action = MainPageFragmentDirections
                     .actionMainPageFragmentToStockDetailsFragment(stockItem.ticker)
                 findNavController().navigate(action)

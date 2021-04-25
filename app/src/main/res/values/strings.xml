@@ -11,6 +11,11 @@
     <string name="half_year_short">6M</string>
     <string name="year_short">1Y</string>
     <string name="all">All</string>
+    <string name="retry">Retry</string>
+    <string name="message_unstable_internet">Internet connection is unstable, please try later</string>
+    <string name="news_and_price_aggregation">About news and stock prices aggregation</string>
+    <string name="general_information">General information</string>
+    <string name="application_info">Application info</string>
     <array name="main_page_tab_titles">
         <item>Stocks</item>
         <item>Favourites</item>
