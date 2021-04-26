@@ -8,7 +8,7 @@ import javax.inject.Named
     dependencies = [AppComponent::class],
     modules = [SettingsModule::class]
 )
-@SettingsScreenScope
+@SettingsFragmentScope
 interface SettingsComponent {
     @Named("appInfoPageUri")
     fun getAppInfoPageUri(): Uri
