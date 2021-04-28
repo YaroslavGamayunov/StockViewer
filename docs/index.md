@@ -1,37 +1,17 @@
-## Welcome to GitHub Pages
+## StockViewer
 
-You can use the [editor on GitHub](https://github.com/YaroslavGamayunov/StockViewer/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
+This application is basically an aggregator of the content provided by stock market APIs
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### News aggregation
 
-### Markdown
+News are aggregated with the help of [Finnhub stock API](https://finnhub.io). This is the only source of news information used by the app, developers of StockViewer do not write news. More precisely, we use [this method](https://finnhub.io/docs/api/company-news)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### Stock prices aggregation
+Stock prices are received from two sources:
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/YaroslavGamayunov/StockViewer/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+* [IEX Cloud API](https://iexcloud.io/docs/api/) - for displaying it on the main page
+* [Finnhub stock API](https://finnhub.io/docs/api/) - for drawing charts
 
 ### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Having bugs? Contact us: [Yaroslav Gamayunov](mailto:yaroslav.gamayunov@gmail.com?subject=[StockViewer]%20Bug%20found)
