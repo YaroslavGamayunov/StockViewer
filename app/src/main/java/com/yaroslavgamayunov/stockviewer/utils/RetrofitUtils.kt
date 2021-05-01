@@ -1,10 +1,21 @@
 package com.yaroslavgamayunov.stockviewer.utils
 
-suspend inline fun <T> safeApiCall(responseFunction: suspend () -> T): T? {
+sealed class CallResult<out T : Any> {
+    data class Success<out T : Any>(val value: T?) : CallResult<T>()
+    data class Error(val cause: Exception? = null, val msg: String? = null) : CallResult<Nothing>()
+}
+
+suspend inline fun <T : Any> safeApiCall(
+    notNull: Boolean = true,
+    call: suspend () -> T?
+): CallResult<T> {
     return try {
-        responseFunction.invoke()
+        val callResult = call.invoke()
+        if (notNull) {
+            requireNotNull(callResult)
+        }
+        CallResult.Success(callResult)
     } catch (e: Exception) {
-        e.printStackTrace()
-        null
+        CallResult.Error(e)
     }
 }

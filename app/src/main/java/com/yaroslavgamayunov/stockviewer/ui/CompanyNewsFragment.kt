@@ -1,3 +1,5 @@
+package com.yaroslavgamayunov.stockviewer.ui
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +10,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.yaroslavgamayunov.stockviewer.R
-import com.yaroslavgamayunov.stockviewer.db.StockDatabase
+import com.yaroslavgamayunov.stockviewer.StockViewerApplication
 import com.yaroslavgamayunov.stockviewer.model.StockApiViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
-import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockNewsAdapter
+import com.yaroslavgamayunov.stockviewer.utils.CallResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import javax.inject.Inject
 
 class CompanyNewsFragment : Fragment() {
+    @Inject
+    lateinit var stockViewModelFactory: StockViewModelFactory
+
     lateinit var stockApiViewModel: StockApiViewModel
 
     override fun onCreateView(
@@ -31,17 +36,15 @@ class CompanyNewsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val factory = StockViewModelFactory(
-            IexCloudApiService.create(),
-            FinHubApiService.create(),
-            StockDatabase.getInstance(requireActivity().applicationContext)
-        )
+
+        (requireActivity().application as StockViewerApplication)
+            .repositoryComponent.inject(this)
 
         stockApiViewModel =
             ViewModelProvider(
                 requireActivity(),
-                factory
-            ).get(StockApiViewModel::class.java)
+                stockViewModelFactory
+            )[StockApiViewModel::class.java]
         setupNewsList()
     }
 
@@ -60,7 +63,8 @@ class CompanyNewsFragment : Fragment() {
             val news = stockApiViewModel.getNews(ticker, startTime, endTime)
 
             withContext(Dispatchers.Main) {
-                adapter.submitList(news)
+                if (news is CallResult.Success)
+                    adapter.submitList(news.value)
             }
         }
     }

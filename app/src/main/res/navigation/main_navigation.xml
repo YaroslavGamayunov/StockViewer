@@ -41,5 +41,14 @@
         android:id="@+id/settingsFragment"
         android:name="com.yaroslavgamayunov.stockviewer.ui.SettingsFragment"
         android:label="Settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_newsPublisherContactFragment"
+            app:destination="@id/newsPublisherContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsPublisherContactFragment"
+        android:name="com.yaroslavgamayunov.stockviewer.ui.NewsPublisherContactFragment"
+        android:label="News publisher"
+        tools:layout="@layout/fragment_news_publisher_contact" />
 </navigation>

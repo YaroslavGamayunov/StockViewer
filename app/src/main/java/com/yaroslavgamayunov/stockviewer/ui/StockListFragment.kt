@@ -11,18 +11,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.yaroslavgamayunov.stockviewer.R
-import com.yaroslavgamayunov.stockviewer.db.StockDatabase
+import com.yaroslavgamayunov.stockviewer.StockViewerApplication
 import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
-import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListAdapter
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListFilter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class StockListFragment : Fragment() {
-
+    @Inject
+    lateinit var stockViewModelFactory: StockViewModelFactory
     lateinit var stockDatabaseViewModel: StockDatabaseViewModel
 
     lateinit var recyclerView: RecyclerView
@@ -42,16 +42,15 @@ class StockListFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val factory = StockViewModelFactory(
-            IexCloudApiService.create(),
-            FinHubApiService.create(),
-            StockDatabase.getInstance(requireActivity().applicationContext)
-        )
+
+        (requireActivity().application as StockViewerApplication)
+            .repositoryComponent.inject(this)
+
         stockDatabaseViewModel =
             ViewModelProvider(
                 requireActivity(),
-                factory
-            ).get(StockDatabaseViewModel::class.java)
+                stockViewModelFactory
+            )[StockDatabaseViewModel::class.java]
 
         setupList(arguments)
     }

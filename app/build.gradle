@@ -13,8 +13,8 @@ android {
         applicationId "com.yaroslavgamayunov.stockviewer"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 3
-        versionName "beta-1.1"
+        versionCode 4
+        versionName "beta-1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

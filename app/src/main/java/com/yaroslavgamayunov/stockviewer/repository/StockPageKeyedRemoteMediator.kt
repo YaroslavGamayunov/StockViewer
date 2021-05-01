@@ -9,15 +9,18 @@ import com.yaroslavgamayunov.stockviewer.vo.RemoteKeys
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 import kotlin.math.ceil
 
 @OptIn(ExperimentalPagingApi::class)
-class StockPageKeyedRemoteMediator(
+class StockPageKeyedRemoteMediator @Inject constructor(
     private val db: StockDatabase,
     private val iexCloudApiService: IexCloudApiService,
     private val finHubApiService: FinHubApiService,
-    private val stockIndex: String
 ) : RemoteMediator<Int, StockItem>() {
+
+    // TODO: Use DI for injecting this field
+    private val stockIndex = "^NDX"
 
     override suspend fun load(
         loadType: LoadType,

@@ -16,6 +16,14 @@
     <string name="news_and_price_aggregation">About news and stock prices aggregation</string>
     <string name="general_information">General information</string>
     <string name="application_info">Application info</string>
+    <string name="news_publisher_contact_information">News publisher contact information</string>
+    <string name="news_publisher_contact_text">This application uses finnhub.io stock market api to provide news.
+        According to Google Play news policy, news publisher contact information should be provided by the application</string>
+    <string name="contact_information">Contact information</string>
+    <string name="finnhub_tech_support_contact">Technical support: support@finnhub.io</string>
+    <string name="finnhub_website_contact">Finnhub website: https://finnhub.io</string>
+
+
     <array name="main_page_tab_titles">
         <item>Stocks</item>
         <item>Favourites</item>

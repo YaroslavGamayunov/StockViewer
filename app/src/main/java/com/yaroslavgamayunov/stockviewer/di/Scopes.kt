@@ -9,3 +9,7 @@ annotation class ApplicationScope
 @Scope
 @Retention
 annotation class SettingsFragmentScope
+
+@Scope
+@Retention
+annotation class RepositoryScope

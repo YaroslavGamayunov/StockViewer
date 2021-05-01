@@ -13,19 +13,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.yaroslavgamayunov.stockviewer.R
-import com.yaroslavgamayunov.stockviewer.db.StockDatabase
+import com.yaroslavgamayunov.stockviewer.StockViewerApplication
 import com.yaroslavgamayunov.stockviewer.model.StockSearchViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockSearchViewModel.SearchState
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
-import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.ui.adapters.ChipListAdapter
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
+
+    @Inject
+    lateinit var stockViewModelFactory: StockViewModelFactory
 
     private lateinit var stockSearchViewModel: StockSearchViewModel
 
@@ -82,17 +84,15 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val factory = StockViewModelFactory(
-            IexCloudApiService.create(),
-            FinHubApiService.create(),
-            StockDatabase.getInstance(requireActivity().applicationContext)
-        )
+
+        (requireActivity().application as StockViewerApplication)
+            .repositoryComponent.inject(this)
 
         stockSearchViewModel =
             ViewModelProvider(
                 requireActivity(),
-                factory
-            ).get(StockSearchViewModel::class.java)
+                stockViewModelFactory
+            )[StockSearchViewModel::class.java]
 
         fillPopularTickersList()
         setupSearchList()
