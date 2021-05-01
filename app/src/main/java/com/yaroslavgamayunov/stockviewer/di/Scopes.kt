@@ -8,4 +8,8 @@ annotation class ApplicationScope
 
 @Scope
 @Retention
-annotation class SettingsScreenScope
+annotation class SettingsFragmentScope
+
+@Scope
+@Retention
+annotation class RepositoryScope

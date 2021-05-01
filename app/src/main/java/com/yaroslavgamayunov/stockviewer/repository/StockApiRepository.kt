@@ -2,21 +2,23 @@ package com.yaroslavgamayunov.stockviewer.repository
 
 import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
+import com.yaroslavgamayunov.stockviewer.utils.CallResult
 import com.yaroslavgamayunov.stockviewer.utils.safeApiCall
 import com.yaroslavgamayunov.stockviewer.vo.CompanyInfo
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
 import com.yaroslavgamayunov.stockviewer.vo.NewsItem
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class StockApiRepository(
+class StockApiRepository @Inject constructor(
     private val iexCloudApiService: IexCloudApiService,
     private val finHubApiService: FinHubApiService
 ) {
     suspend fun getHistoricalData(
         ticker: String,
         duration: StockDataDuration
-    ): HistoricalCandleData? {
+    ): CallResult<HistoricalCandleData> {
         return safeApiCall {
             finHubApiService.getHistoricalData(
                 ticker,
@@ -27,7 +29,11 @@ class StockApiRepository(
         }
     }
 
-    suspend fun getNews(ticker: String, startTime: Long, endTime: Long): List<NewsItem>? {
+    suspend fun getNews(
+        ticker: String,
+        startTime: Long,
+        endTime: Long
+    ): CallResult<List<NewsItem>> {
         val startDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(startTime))
         val endDate = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date(endTime))
         return safeApiCall {
@@ -35,8 +41,10 @@ class StockApiRepository(
         }
     }
 
-    suspend fun getCompanyInfo(ticker: String): CompanyInfo? {
-        return safeApiCall { iexCloudApiService.getCompanyInfo(ticker) }
+    suspend fun getCompanyInfo(ticker: String): CallResult<CompanyInfo> {
+        return safeApiCall {
+            iexCloudApiService.getCompanyInfo(ticker)
+        }
     }
 }
 

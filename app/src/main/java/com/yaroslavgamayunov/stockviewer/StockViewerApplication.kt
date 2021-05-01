@@ -7,15 +7,21 @@ import com.yandex.metrica.YandexMetricaConfig
 import com.yaroslavgamayunov.stockviewer.di.AppComponent
 import com.yaroslavgamayunov.stockviewer.di.AppModule
 import com.yaroslavgamayunov.stockviewer.di.DaggerAppComponent
+import com.yaroslavgamayunov.stockviewer.di.RepositoryComponent
 
 class StockViewerApplication : Application() {
     lateinit var appComponent: AppComponent
         private set
 
+    val repositoryComponent: RepositoryComponent by lazy {
+        appComponent.repositoryComponentBuilder().build()
+    }
+
+
     override fun onCreate() {
         super.onCreate()
 
-        //TODO: Add support of dark theme
+        //TODO: Add support for dark theme
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         setupAppComponent()

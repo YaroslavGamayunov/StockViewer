@@ -9,19 +9,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.yaroslavgamayunov.stockviewer.R
+import com.yaroslavgamayunov.stockviewer.StockViewerApplication
 import com.yaroslavgamayunov.stockviewer.databinding.FragmentCompanyInfoBinding
-import com.yaroslavgamayunov.stockviewer.db.StockDatabase
 import com.yaroslavgamayunov.stockviewer.model.StockApiViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
-import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.ui.adapters.ChipListAdapter
+import com.yaroslavgamayunov.stockviewer.utils.CallResult
 import com.yaroslavgamayunov.stockviewer.vo.CompanyInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class CompanyInfoFragment : Fragment() {
+    @Inject
+    lateinit var stockViewModelFactory: StockViewModelFactory
+
     private lateinit var stockApiViewModel: StockApiViewModel
     private var binding: FragmentCompanyInfoBinding? = null
 
@@ -44,16 +47,14 @@ class CompanyInfoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val factory = StockViewModelFactory(
-            IexCloudApiService.create(),
-            FinHubApiService.create(),
-            StockDatabase.getInstance(requireActivity().applicationContext)
-        )
+
+        (requireActivity().application as StockViewerApplication)
+            .repositoryComponent.inject(this)
 
         stockApiViewModel =
             ViewModelProvider(
                 requireActivity(),
-                factory
+                stockViewModelFactory
             ).get(StockApiViewModel::class.java)
 
         arguments?.getString(STOCK_TICKER_TAG)?.let { loadCompanyInfo(it) }
@@ -86,16 +87,14 @@ class CompanyInfoFragment : Fragment() {
 
             val companyInfo = stockApiViewModel.getCompanyInfo(ticker)
 
-            if (companyInfo == null) {
-                tryToReloadCompanyInfo(ticker)
-            }
+            when (companyInfo) {
+                is CallResult.Error -> tryToReloadCompanyInfo(ticker)
 
-            withContext(Dispatchers.Main) {
-                if (companyInfo != null) {
-                    updateCompanyInfoLayout(companyInfo)
+                is CallResult.Success -> withContext(Dispatchers.Main) {
+                    updateCompanyInfoLayout(companyInfo.value!!)
+                    binding!!.companyInfoConstraintLayout.visibility = View.VISIBLE
+                    binding!!.progressBar.visibility = View.INVISIBLE
                 }
-                binding!!.companyInfoConstraintLayout.visibility = View.VISIBLE
-                binding!!.progressBar.visibility = View.INVISIBLE
             }
         }
     }

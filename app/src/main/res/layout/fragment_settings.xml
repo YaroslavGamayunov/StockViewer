@@ -47,14 +47,14 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/dataAggregationTextView"
+                android:id="@+id/newsPublisherContactInformation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="16dp"
-                android:text="@string/news_and_price_aggregation"
+                android:text="@string/news_publisher_contact_information"
                 android:textColor="?attr/colorOnPrimary"
                 android:textSize="16sp" />
 

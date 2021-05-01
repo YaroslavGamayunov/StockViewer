@@ -10,6 +10,6 @@ class SettingsModule {
     @Provides
     @Named("appInfoPageUri")
     fun provideAppInfoPageUri(): Uri {
-        return Uri.parse("https://yaroslavgamayunov.github.io/StockViewer-info/")
+        return Uri.parse("https://yaroslavgamayunov.github.io/StockViewer/")
     }
 }

@@ -10,8 +10,9 @@ import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.vo.FavouriteStockItem
 import com.yaroslavgamayunov.stockviewer.vo.StockItem
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class StockDatabaseRepository(
+class StockDatabaseRepository @Inject constructor(
     private val iexCloudApiService: IexCloudApiService,
     private val finHubApiService: FinHubApiService,
     private val db: StockDatabase
@@ -26,7 +27,6 @@ class StockDatabaseRepository(
                 db,
                 iexCloudApiService,
                 finHubApiService,
-                stockIndex
             ),
             pagingSourceFactory = { db.stockItemDao().getAll() }
         ).flow

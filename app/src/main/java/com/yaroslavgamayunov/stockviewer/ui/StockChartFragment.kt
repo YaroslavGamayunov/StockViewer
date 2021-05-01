@@ -19,24 +19,29 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
 import com.google.android.material.color.MaterialColors
 import com.yaroslavgamayunov.stockviewer.R
+import com.yaroslavgamayunov.stockviewer.StockViewerApplication
 import com.yaroslavgamayunov.stockviewer.databinding.FragmentStockChartBinding
-import com.yaroslavgamayunov.stockviewer.db.StockDatabase
 import com.yaroslavgamayunov.stockviewer.model.StockApiViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
-import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.repository.StockDataDuration
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockPriceMarkerView
+import com.yaroslavgamayunov.stockviewer.utils.CallResult
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 class StockChartFragment : Fragment() {
     private var binding: FragmentStockChartBinding? = null
+
+    @Inject
+    lateinit var stockViewModelFactory: StockViewModelFactory
+
     private lateinit var stockDatabaseViewModel: StockDatabaseViewModel
     private lateinit var stockApiViewModel: StockApiViewModel
+
     private lateinit var marker: StockPriceMarkerView
 
     override fun onCreateView(
@@ -58,22 +63,19 @@ class StockChartFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val factory = StockViewModelFactory(
-            IexCloudApiService.create(),
-            FinHubApiService.create(),
-            StockDatabase.getInstance(requireActivity().applicationContext)
-        )
+        (requireActivity().application as StockViewerApplication)
+            .repositoryComponent.inject(this)
 
         stockDatabaseViewModel =
             ViewModelProvider(
                 requireActivity(),
-                factory
-            ).get(StockDatabaseViewModel::class.java)
+                stockViewModelFactory
+            )[StockDatabaseViewModel::class.java]
 
         stockApiViewModel = ViewModelProvider(
             requireActivity(),
-            factory
-        ).get(StockApiViewModel::class.java)
+            stockViewModelFactory
+        )[StockApiViewModel::class.java]
 
         setupChart()
     }
@@ -159,14 +161,14 @@ class StockChartFragment : Fragment() {
                 duration
             )
 
-            if (data == null) {
-                tryToReloadChartData(ticker, duration)
-            }
+            when (data) {
+                is CallResult.Error -> tryToReloadChartData(ticker, duration)
 
-            withContext(Dispatchers.Main) {
-                binding!!.progressBar.visibility = View.INVISIBLE
-                binding!!.stockDetailChart.visibility = View.VISIBLE
-                setChartData(data)
+                is CallResult.Success -> withContext(Dispatchers.Main) {
+                    binding!!.progressBar.visibility = View.INVISIBLE
+                    binding!!.stockDetailChart.visibility = View.VISIBLE
+                    setChartData(data.value!!)
+                }
             }
         }
     }

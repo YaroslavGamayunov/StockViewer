@@ -14,16 +14,18 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yaroslavgamayunov.stockviewer.R
-import com.yaroslavgamayunov.stockviewer.db.StockDatabase
+import com.yaroslavgamayunov.stockviewer.StockViewerApplication
 import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
-import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockDetailViewPagerAdapter
+import javax.inject.Inject
 
 class StockDetailFragment : Fragment() {
 
-    val args: StockDetailFragmentArgs by navArgs()
+    private val args: StockDetailFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var stockViewModelFactory: StockViewModelFactory
     lateinit var stockDatabaseViewModel: StockDatabaseViewModel
 
     override fun onCreateView(
@@ -71,16 +73,13 @@ class StockDetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val factory = StockViewModelFactory(
-            IexCloudApiService.create(),
-            FinHubApiService.create(),
-            StockDatabase.getInstance(requireActivity().applicationContext)
-        )
+        (requireActivity().application as StockViewerApplication)
+            .repositoryComponent.inject(this)
 
         stockDatabaseViewModel =
             ViewModelProvider(
                 requireActivity(),
-                factory
+                stockViewModelFactory
             ).get(StockDatabaseViewModel::class.java)
 
         lifecycleScope.launchWhenCreated {

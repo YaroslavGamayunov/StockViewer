@@ -7,8 +7,9 @@ import com.yaroslavgamayunov.stockviewer.network.FinHubApiService
 import com.yaroslavgamayunov.stockviewer.network.IexCloudApiService
 import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
 import com.yaroslavgamayunov.stockviewer.repository.StockDatabaseRepository
+import javax.inject.Inject
 
-class StockViewModelFactory(
+class StockViewModelFactory @Inject constructor(
     iexCloudApiService: IexCloudApiService,
     finHubApiService: FinHubApiService,
     db: StockDatabase
@@ -19,10 +20,12 @@ class StockViewModelFactory(
     private val stockApiRepository =
         StockApiRepository(iexCloudApiService, finHubApiService)
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(StockDatabaseViewModel::class.java)) {
             return StockDatabaseViewModel(stockDatabaseRepository) as T
         }
+
         if (modelClass.isAssignableFrom(StockSearchViewModel::class.java)) {
             return StockSearchViewModel(stockDatabaseRepository) as T
         }

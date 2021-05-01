@@ -32,14 +32,8 @@ class SettingsFragment : Fragment() {
         val toolbar = view.findViewById<Toolbar>(R.id.settingsFragmentToolbar)
         toolbar.setupWithNavController(findNavController())
 
-        binding!!.dataAggregationTextView.setOnClickListener {
-            val uri = settingsComponent.getAppInfoPageUri()
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
-        }
-
-        binding!!.dataAggregationTextView.setOnClickListener {
-            val uri = settingsComponent.getAppInfoPageUri()
-            startActivity(Intent(Intent.ACTION_VIEW, uri))
+        binding!!.newsPublisherContactInformation.setOnClickListener {
+            findNavController().navigate(R.id.action_settingsFragment_to_newsPublisherContactFragment)
         }
 
         binding!!.applicationInfoTextView.setOnClickListener {
