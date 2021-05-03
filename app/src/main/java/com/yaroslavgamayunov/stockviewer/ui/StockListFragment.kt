@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -23,7 +23,8 @@ import javax.inject.Inject
 class StockListFragment : Fragment() {
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
-    lateinit var stockDatabaseViewModel: StockDatabaseViewModel
+
+    private val stockDatabaseViewModel: StockDatabaseViewModel by viewModels { stockViewModelFactory }
 
     lateinit var recyclerView: RecyclerView
     lateinit var listAdapter: StockListAdapter
@@ -45,12 +46,6 @@ class StockListFragment : Fragment() {
 
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
-
-        stockDatabaseViewModel =
-            ViewModelProvider(
-                requireActivity(),
-                stockViewModelFactory
-            )[StockDatabaseViewModel::class.java]
 
         setupList(arguments)
     }

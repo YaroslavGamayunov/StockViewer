@@ -10,6 +10,8 @@ import com.yaroslavgamayunov.stockviewer.vo.NewsItem
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import kotlin.time.Duration
+import kotlin.time.days
 
 class StockApiRepository @Inject constructor(
     private val iexCloudApiService: IexCloudApiService,
@@ -17,14 +19,14 @@ class StockApiRepository @Inject constructor(
 ) {
     suspend fun getHistoricalData(
         ticker: String,
-        duration: StockDataDuration
+        interval: StockDataInterval
     ): CallResult<HistoricalCandleData> {
         return safeApiCall {
             finHubApiService.getHistoricalData(
                 ticker,
-                duration.resolution,
-                duration.startTime,
-                duration.endTime
+                interval.resolution,
+                interval.startTime,
+                interval.endTime
             )
         }
     }
@@ -48,47 +50,25 @@ class StockApiRepository @Inject constructor(
     }
 }
 
-sealed class StockDataDuration {
+@OptIn(kotlin.time.ExperimentalTime::class)
+sealed class StockDataInterval(val resolution: String, duration: Duration) {
     val endTime: Long
         get() {
             val calendar = Calendar.getInstance()
             return calendar.time.time.div(1000)
         }
-    val startTime: Long
-        get() {
-            val calendar = Calendar.getInstance()
-            when (this) {
-                is All -> return 0
-                is Day -> calendar.add(Calendar.DAY_OF_YEAR, -1)
-                is HalfYear -> calendar.add(Calendar.MONTH, -6)
-                is Month -> calendar.add(Calendar.MONTH, -1)
-                is Week -> calendar.add(Calendar.WEEK_OF_YEAR, -1)
-                is Year -> calendar.add(Calendar.YEAR, -1)
-            }
-            return calendar.time.time.div(1000)
-        }
 
-    val resolution: String
-        get() {
-            return when (this) {
-                is All -> "W"
-                is Day -> "30"
-                is HalfYear -> "D"
-                is Month -> "D"
-                is Week -> "60"
-                is Year -> "D"
-            }
-        }
+    val startTime: Long = (endTime - duration.inSeconds).toLong()
 
-    object Day : StockDataDuration()
+    class Day : StockDataInterval("30", 1.days)
 
-    object Week : StockDataDuration()
+    class Week : StockDataInterval("D", 7.days)
 
-    object Month : StockDataDuration()
+    class Month : StockDataInterval("D", 30.days)
 
-    object HalfYear : StockDataDuration()
+    class HalfYear : StockDataInterval("D", 180.days)
 
-    object Year : StockDataDuration()
+    class Year : StockDataInterval("D", 365.days)
 
-    object All : StockDataDuration()
+    class All : StockDataInterval("W", Duration.INFINITE)
 }
