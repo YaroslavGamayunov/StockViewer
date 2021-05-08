@@ -1,10 +1,12 @@
-# 📈 StockViewer
-This application allows users to analyze stock prices and find latest market news
+<h1>📈 StockViewer</h1>
 <p align="left">
-  <img width="128" src="docs/media/stockviewer_logo.png">
+  <img width="170" src="docs/media/stockviewer_logo.png"></img>
 </p>
 
-<a href='https://play.google.com/store/apps/details?id=com.yaroslavgamayunov.stockviewer'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="128"/></a>
+<a href='https://play.google.com/store/apps/details?id=com.yaroslavgamayunov.stockviewer'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="170"/></a>
+----------------------------------------------------------------
+
+This application allows users to analyze stock prices and find latest market news
 
 ## Technologies and architecture
 * Built on MVVM pattern 
@@ -21,7 +23,7 @@ This application allows users to analyze stock prices and find latest market new
 * View company profile and news 
 
 ## Screenshots
-<img width="300" src="docs/media/screenshot_1.gif"><img width="300" src="docs/media/screenshot_2.gif"><img width="300" src="docs/media/screenshot_3.gif"><img width="300" src="docs/media/screenshot_4.gif">
+<img width="300" src="docs/media/screenshot_1.gif"> <img width="300" src="docs/media/screenshot_2.gif"><img width="300" src="docs/media/screenshot_3.gif"><img width="300" src="docs/media/screenshot_4.gif">
 
 ## Plans
 * Use websockets to provide users with instant updates of stock prices
