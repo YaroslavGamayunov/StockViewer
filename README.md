@@ -10,17 +10,18 @@ This application allows users to analyze stock prices and find latest market new
 
 ## Technologies and architecture
 * Built on MVVM pattern 
-* Uses Dagger 2 for dependency injection
-* Android architecture components: ViewModel, Room, Paging
-* Retrofit for API calls
-* Koil for image loading
+* Uses [Dagger 2](https://github.com/google/dagger) for dependency injection
+* Android Architecture Components: ViewModel, Room, Paging
+* [Retrofit](https://github.com/square/retrofit) for API calls
+* [Koil](https://github.com/coil-kt/coil) for image loading
 
 ## Features 
 * Discover stock prices (represented as a list)
 * Search for tickers
 * Add tickers to favourites 
 * View stock price chart for specified time segment (Day, Week, Month, Year)
-* View company profile and news 
+* View company profile and news
+* Caches list of stock prices into database
 
 ## Screenshots
 <img width="300" src="docs/media/screenshot_1.gif"> <img width="300" src="docs/media/screenshot_2.gif"><img width="300" src="docs/media/screenshot_3.gif"><img width="300" src="docs/media/screenshot_4.gif">
