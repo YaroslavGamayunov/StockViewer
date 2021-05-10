@@ -14,6 +14,7 @@ This application allows users to analyze stock prices and find latest market new
 * Android Architecture Components: ViewModel, Room, Paging
 * [Retrofit](https://github.com/square/retrofit) for API calls
 * [Koil](https://github.com/coil-kt/coil) for image loading
+* Yandex [AppMetrica](https://appmetrica.yandex.ru/) for application analytics
 
 ## Features 
 * Discover stock prices (represented as a list)
