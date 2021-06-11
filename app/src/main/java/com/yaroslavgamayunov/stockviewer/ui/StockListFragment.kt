@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -16,14 +16,18 @@ import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListAdapter
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockListFilter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class StockListFragment : Fragment() {
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
-    lateinit var stockDatabaseViewModel: StockDatabaseViewModel
+
+    private val stockDatabaseViewModel: StockDatabaseViewModel by viewModels { stockViewModelFactory }
 
     lateinit var recyclerView: RecyclerView
     lateinit var listAdapter: StockListAdapter
@@ -46,17 +50,12 @@ class StockListFragment : Fragment() {
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
 
-        stockDatabaseViewModel =
-            ViewModelProvider(
-                requireActivity(),
-                stockViewModelFactory
-            )[StockDatabaseViewModel::class.java]
-
         setupList(arguments)
     }
 
     private fun setupList(arguments: Bundle?) {
-        val filter = arguments?.get(LIST_FILTER_TAG) ?: StockListFilter.ALL
+        val filter: StockListFilter =
+            arguments?.get(LIST_FILTER_TAG) as? StockListFilter ?: StockListFilter.ALL
 
         listAdapter = StockListAdapter(
             onItemClick = { stockItem ->
@@ -68,17 +67,21 @@ class StockListFragment : Fragment() {
         recyclerView.adapter = listAdapter
 
 
-        lifecycleScope.launch {
+        val data = lifecycleScope.async(Dispatchers.IO) {
             when (filter) {
                 StockListFilter.ALL ->
-                    stockDatabaseViewModel.getStocksForIndexPaged("^NDX").collectLatest {
-                        listAdapter.submitData(it)
-                    }
+                    stockDatabaseViewModel.getStocksForIndexPaged("^NDX")
 
                 StockListFilter.FAVOURITES ->
-                    stockDatabaseViewModel.getFavouriteStocksPaged().collectLatest {
-                        listAdapter.submitData(it)
-                    }
+                    stockDatabaseViewModel.getFavouriteStocksPaged()
+            }
+        }
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            data.await().collectLatest { pagingData ->
+                withContext(Dispatchers.Main) {
+                    listAdapter.submitData(pagingData)
+                }
             }
         }
     }

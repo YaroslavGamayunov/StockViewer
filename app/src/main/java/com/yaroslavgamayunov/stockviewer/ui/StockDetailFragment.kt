@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -26,7 +26,8 @@ class StockDetailFragment : Fragment() {
 
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
-    lateinit var stockDatabaseViewModel: StockDatabaseViewModel
+
+    private val stockDatabaseViewModel: StockDatabaseViewModel by viewModels { stockViewModelFactory }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,12 +76,6 @@ class StockDetailFragment : Fragment() {
 
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
-
-        stockDatabaseViewModel =
-            ViewModelProvider(
-                requireActivity(),
-                stockViewModelFactory
-            ).get(StockDatabaseViewModel::class.java)
 
         lifecycleScope.launchWhenCreated {
             isFavourite = stockDatabaseViewModel.isFavourite(args.ticker)
