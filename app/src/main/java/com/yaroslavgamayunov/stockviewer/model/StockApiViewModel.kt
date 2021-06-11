@@ -2,7 +2,7 @@ package com.yaroslavgamayunov.stockviewer.model
 
 import androidx.lifecycle.ViewModel
 import com.yaroslavgamayunov.stockviewer.repository.StockApiRepository
-import com.yaroslavgamayunov.stockviewer.repository.StockDataInterval
+import com.yaroslavgamayunov.stockviewer.repository.StockDataDuration
 import com.yaroslavgamayunov.stockviewer.utils.CallResult
 import com.yaroslavgamayunov.stockviewer.vo.CompanyInfo
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
@@ -19,9 +19,9 @@ class StockApiViewModel(private val repository: StockApiRepository) : ViewModel(
 
     suspend fun getHistoricalCandleData(
         ticker: String,
-        interval: StockDataInterval
+        duration: StockDataDuration
     ): CallResult<HistoricalCandleData> {
-        return repository.getHistoricalData(ticker, interval)
+        return repository.getHistoricalData(ticker, duration)
     }
 
     suspend fun getCompanyInfo(ticker: String): CallResult<CompanyInfo> {

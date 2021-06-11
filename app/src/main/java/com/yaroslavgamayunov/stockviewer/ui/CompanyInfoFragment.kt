@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.yaroslavgamayunov.stockviewer.R
 import com.yaroslavgamayunov.stockviewer.StockViewerApplication
@@ -25,7 +25,7 @@ class CompanyInfoFragment : Fragment() {
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
 
-    private val stockApiViewModel: StockApiViewModel by viewModels { stockViewModelFactory }
+    private lateinit var stockApiViewModel: StockApiViewModel
     private var binding: FragmentCompanyInfoBinding? = null
 
     override fun onCreateView(
@@ -51,22 +51,27 @@ class CompanyInfoFragment : Fragment() {
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
 
+        stockApiViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                stockViewModelFactory
+            ).get(StockApiViewModel::class.java)
+
         arguments?.getString(STOCK_TICKER_TAG)?.let { loadCompanyInfo(it) }
     }
 
-    private fun updateCompanyInfoLayout(companyInfo: CompanyInfo) = binding?.apply {
-        companyName.text = companyInfo.companyName
-        employeesTextView.text = companyInfo.employees.toString()
-        addressTextView.apply {
+    private fun updateCompanyInfoLayout(companyInfo: CompanyInfo) {
+        binding!!.companyName.text = companyInfo.companyName
+        binding!!.employeesTextView.text = companyInfo.employees.toString()
+        binding!!.addressTextView.apply {
             val address = companyInfo.getAddressString()
             text = address
             visibility = if (address.isEmpty()) View.GONE else View.VISIBLE
         }
-        companyDescriptionTextView.text = companyInfo.description
-        companyTagRecyclerView.adapter =
+        binding!!.companyDescriptionTextView.text = companyInfo.description
+        binding!!.companyTagRecyclerView.adapter =
             ChipListAdapter(onClick = {}).also { it.submitList(companyInfo.tags) }
-
-        with(companyWebsiteTextView) {
+        with(binding!!.companyWebsiteTextView) {
             text = companyInfo.website
             // TODO: Make links clickable
             //Linkify.addLinks(this, Linkify.MAP_ADDRESSES)

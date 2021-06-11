@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.Chart
@@ -24,7 +24,7 @@ import com.yaroslavgamayunov.stockviewer.databinding.FragmentStockChartBinding
 import com.yaroslavgamayunov.stockviewer.model.StockApiViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockDatabaseViewModel
 import com.yaroslavgamayunov.stockviewer.model.StockViewModelFactory
-import com.yaroslavgamayunov.stockviewer.repository.StockDataInterval
+import com.yaroslavgamayunov.stockviewer.repository.StockDataDuration
 import com.yaroslavgamayunov.stockviewer.ui.adapters.StockPriceMarkerView
 import com.yaroslavgamayunov.stockviewer.utils.CallResult
 import com.yaroslavgamayunov.stockviewer.vo.HistoricalCandleData
@@ -39,8 +39,8 @@ class StockChartFragment : Fragment() {
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
 
-    private val stockDatabaseViewModel: StockDatabaseViewModel by viewModels { stockViewModelFactory }
-    private val stockApiViewModel: StockApiViewModel by viewModels { stockViewModelFactory }
+    private lateinit var stockDatabaseViewModel: StockDatabaseViewModel
+    private lateinit var stockApiViewModel: StockApiViewModel
 
     private lateinit var marker: StockPriceMarkerView
 
@@ -66,10 +66,20 @@ class StockChartFragment : Fragment() {
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
 
+        stockDatabaseViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                stockViewModelFactory
+            )[StockDatabaseViewModel::class.java]
+
+        stockApiViewModel = ViewModelProvider(
+            requireActivity(),
+            stockViewModelFactory
+        )[StockApiViewModel::class.java]
+
         setupChart()
     }
 
-    // TODO: Use data binding
     private fun setupChart() {
         val ticker = requireArguments().getString(STOCK_TICKER_TAG)!!
 
@@ -107,40 +117,38 @@ class StockChartFragment : Fragment() {
         chartPaint.textSize = 30f
         chartPaint.color = MaterialColors.getColor(chart, R.attr.colorSecondary)
 
-        binding!!.apply {
-            stockChartDayButton.setOnClickListener {
-                loadAndSetChartData(ticker, StockDataInterval.Day())
-            }
-
-            stockChartWeekButton.setOnClickListener {
-                loadAndSetChartData(ticker, StockDataInterval.Week())
-            }
-
-            stockChartMonthButton.setOnClickListener {
-                loadAndSetChartData(ticker, StockDataInterval.Month())
-            }
-
-            stockChartHalfYearButton.setOnClickListener {
-                loadAndSetChartData(ticker, StockDataInterval.HalfYear())
-            }
-
-            stockChartYearButton.setOnClickListener {
-                loadAndSetChartData(ticker, StockDataInterval.Year())
-            }
-
-            stockChartAllButton.setOnClickListener {
-                loadAndSetChartData(ticker, StockDataInterval.All())
-            }
+        binding!!.stockChartDayButton.setOnClickListener {
+            loadAndSetChartData(ticker, StockDataDuration.Day)
         }
 
-        loadAndSetChartData(ticker, StockDataInterval.Day())
+        binding!!.stockChartWeekButton.setOnClickListener {
+            loadAndSetChartData(ticker, StockDataDuration.Week)
+        }
+
+        binding!!.stockChartMonthButton.setOnClickListener {
+            loadAndSetChartData(ticker, StockDataDuration.Month)
+        }
+
+        binding!!.stockChartHalfYearButton.setOnClickListener {
+            loadAndSetChartData(ticker, StockDataDuration.HalfYear)
+        }
+
+        binding!!.stockChartYearButton.setOnClickListener {
+            loadAndSetChartData(ticker, StockDataDuration.Year)
+        }
+
+        binding!!.stockChartAllButton.setOnClickListener {
+            loadAndSetChartData(ticker, StockDataDuration.All)
+        }
+
+        loadAndSetChartData(ticker, StockDataDuration.Day)
     }
 
     private fun loadAndSetChartData(
         ticker: String,
-        interval: StockDataInterval
+        duration: StockDataDuration
     ) {
-        marker.highTimeRes = interval is StockDataInterval.Day
+        marker.highTimeRes = duration is StockDataDuration.Day
 
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.Main) {
@@ -150,11 +158,11 @@ class StockChartFragment : Fragment() {
 
             val data = stockApiViewModel.getHistoricalCandleData(
                 ticker,
-                interval
+                duration
             )
 
             when (data) {
-                is CallResult.Error -> tryToReloadChartData(ticker, interval)
+                is CallResult.Error -> tryToReloadChartData(ticker, duration)
 
                 is CallResult.Success -> withContext(Dispatchers.Main) {
                     binding!!.progressBar.visibility = View.INVISIBLE
@@ -167,14 +175,14 @@ class StockChartFragment : Fragment() {
 
     private fun tryToReloadChartData(
         ticker: String,
-        interval: StockDataInterval
+        duration: StockDataDuration
     ) {
         if (activity is MainActivity) {
             (activity as MainActivity).showRetrySnackbar(
                 R.string.message_unstable_internet,
                 anchorView = binding?.horizontalScrollView
             ) {
-                loadAndSetChartData(ticker, interval)
+                loadAndSetChartData(ticker, duration)
             }
         }
     }

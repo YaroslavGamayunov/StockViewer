@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -29,7 +29,7 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
 
-    private val stockSearchViewModel: StockSearchViewModel by viewModels { stockViewModelFactory }
+    private lateinit var stockSearchViewModel: StockSearchViewModel
 
     private lateinit var searchListAdapter: StockListAdapter
     private lateinit var popularTickersAdapter: ChipListAdapter
@@ -87,6 +87,12 @@ class StockSearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
+
+        stockSearchViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                stockViewModelFactory
+            )[StockSearchViewModel::class.java]
 
         fillPopularTickersList()
         setupSearchList()
