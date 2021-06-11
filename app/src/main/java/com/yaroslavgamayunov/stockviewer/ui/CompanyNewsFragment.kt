@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.yaroslavgamayunov.stockviewer.R
@@ -25,7 +25,7 @@ class CompanyNewsFragment : Fragment() {
     @Inject
     lateinit var stockViewModelFactory: StockViewModelFactory
 
-    private val stockApiViewModel: StockApiViewModel by viewModels { stockViewModelFactory }
+    lateinit var stockApiViewModel: StockApiViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +40,11 @@ class CompanyNewsFragment : Fragment() {
         (requireActivity().application as StockViewerApplication)
             .repositoryComponent.inject(this)
 
+        stockApiViewModel =
+            ViewModelProvider(
+                requireActivity(),
+                stockViewModelFactory
+            )[StockApiViewModel::class.java]
         setupNewsList()
     }
 

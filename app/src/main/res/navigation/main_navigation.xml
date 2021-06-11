@@ -11,22 +11,13 @@
         tools:layout="@layout/fragment_main_page">
         <action
             android:id="@+id/action_mainPageFragment_to_stockDetailsFragment"
-            app:destination="@id/stockDetailFragment"
-            app:enterAnim="@anim/nav_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/nav_pop_enter"
-            app:popExitAnim="@anim/nav_pop_exit" />
+            app:destination="@id/stockDetailFragment" />
         <action
             android:id="@+id/action_mainPageFragment_to_stockSearchFragment"
             app:destination="@id/stockSearchFragment" />
         <action
             android:id="@+id/action_mainPageFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment"
-            app:enterAnim="@anim/nav_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/nav_pop_enter"
-            app:popExitAnim="@anim/nav_pop_exit"
-            app:popUpToInclusive="false" />
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/stockDetailFragment"
@@ -44,11 +35,7 @@
         tools:layout="@layout/fragment_stock_search">
         <action
             android:id="@+id/action_stockSearchFragment_to_stockDetailFragment"
-            app:destination="@id/stockDetailFragment"
-            app:enterAnim="@anim/nav_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/nav_pop_enter"
-            app:popExitAnim="@anim/nav_pop_exit" />
+            app:destination="@id/stockDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -57,11 +44,7 @@
         tools:layout="@layout/fragment_settings">
         <action
             android:id="@+id/action_settingsFragment_to_newsPublisherContactFragment"
-            app:destination="@id/newsPublisherContactFragment"
-            app:enterAnim="@anim/nav_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/nav_pop_enter"
-            app:popExitAnim="@anim/nav_pop_exit" />
+            app:destination="@id/newsPublisherContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsPublisherContactFragment"
